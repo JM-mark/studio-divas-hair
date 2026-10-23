@@ -65,7 +65,7 @@ function runCount(el: HTMLElement) {
   el.dataset.done = '1';
   const to = parseFloat(el.dataset.to ?? ''), dec = parseInt(el.dataset.decimals ?? '0', 10);
   if (isNaN(to) || reduced) return;
-  const finalTxt = fmt(to, dec), dur = 1600, t0 = performance.now();
+  const finalTxt = fmt(to, dec), dur = 1200, t0 = performance.now();
   el.textContent = fmt(0, dec);
   (function step(now: number) {
     const p = Math.min((now - t0) / dur, 1), e = 1 - Math.pow(1 - p, 3);
@@ -81,11 +81,15 @@ if ('IntersectionObserver' in window) {
 
 /* ---------- Hero: mouse parallax (desktop) + video that starts after load ---------- */
 if (hero && media && proof && fine && !reduced) {
+  let mx = 0, my = 0, raf = 0; // one write per frame, from the latest pointer position
   hero.addEventListener('mousemove', (e) => {
-    const r = hero.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
-    requestAnimationFrame(() => {
-      media.style.transform = `translate3d(${(-x * 22).toFixed(1)}px,${(-y * 16).toFixed(1)}px,0)`;
-      proof.style.transform = `translate3d(${(x * 26).toFixed(1)}px,${(y * 20).toFixed(1)}px,0)`;
+    const r = hero.getBoundingClientRect();
+    mx = (e.clientX - r.left) / r.width - 0.5; my = (e.clientY - r.top) / r.height - 0.5;
+    if (raf) return;
+    raf = requestAnimationFrame(() => {
+      raf = 0;
+      media.style.transform = `translate3d(${(-mx * 22).toFixed(1)}px,${(-my * 16).toFixed(1)}px,0)`;
+      proof.style.transform = `translate3d(${(mx * 26).toFixed(1)}px,${(my * 20).toFixed(1)}px,0)`;
     });
   });
   hero.addEventListener('mouseleave', () => { media.style.transform = ''; proof.style.transform = ''; });

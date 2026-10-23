@@ -3,11 +3,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { withBase } from '../lib/url';
-interface Props { file?: string; height?: number; class?: string; alt?: string }
-const { file = 'logo-horizontal-reversed.svg', height = 40, class: cls = '', alt = "Studio Diva's Hair" } = Astro.props;
+interface Props { file?: string; height?: number; class?: string; alt?: string; priority?: boolean }
+const { file = 'logo-horizontal-reversed.svg', height = 40, class: cls = '', alt = "Studio Diva's Hair", priority = false } = Astro.props;
 // Build runs from the project root, so resolve against it (not against the bundled chunk location).
 const svg = fs.readFileSync(path.join(process.cwd(), 'public', 'logo', file), 'utf8');
 const [, , vw, vh] = svg.match(/viewBox="([^"]+)"/)![1].split(' ').map(Number);
 const width = Math.round((height * vw) / vh);
 ---
-<img src={withBase(`logo/${file}`)} alt={alt} width={width} height={height} class={cls} decoding="async" />
+<img src={withBase(`logo/${file}`)} alt={alt} width={width} height={height} class={cls} decoding="async" fetchpriority={priority ? 'high' : undefined} />
