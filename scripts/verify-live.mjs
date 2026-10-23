@@ -48,7 +48,7 @@ for (const p of pages) {
 // a missing page must serve the custom 404 with a 404 status
 const miss = await fetch(root + 'nao-existe/abc');
 const body = await miss.text();
-console.log(miss.status, root + 'nao-existe/abc', /Ops, essa página não existe/.test(body) ? '(custom 404 page)' : '(NOT the custom 404)');
+console.log(miss.status, root + 'nao-existe/abc', /Ops, essa página/.test(body) ? '(custom 404 page)' : '(NOT the custom 404)');
 if (miss.status !== 404 || !/Ops, essa página/.test(body)) problems.push('custom 404 not served');
 console.log(`checked ${seen.size} unique same-site URLs`);
 console.log(problems.length ? 'PROBLEMS:\n' + problems.join('\n') : 'No 404s, no assets outside the base path.');
