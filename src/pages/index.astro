@@ -1,0 +1,31 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Services from '../components/Services.astro';
+import About from '../components/About.astro';
+import Gallery from '../components/Gallery.astro';
+import Instagram from '../components/Instagram.astro';
+import Testimonials from '../components/Testimonials.astro';
+import HoursLocation from '../components/HoursLocation.astro';
+import Footer from '../components/Footer.astro';
+import { features } from '../data/site';
+import WhatsAppFloat from '../components/WhatsAppFloat.astro';
+---
+<Layout
+  title="Studio Diva's Hair | Salão de Beleza no Centro de Indaiatuba"
+  description="Salão de beleza unissex em Indaiatuba com nota 5,0 no Google: corte, escova, progressiva, hidratação, matização, manicure e estética no Centro. Agende pelo WhatsApp."
+>
+  <Header />
+  <main id="conteudo">
+    <Hero />
+    <Services />
+    <About />
+    {features.showClientPhotos && <Gallery />}
+    <Instagram />
+    <Testimonials />
+    <HoursLocation />
+  </main>
+  <Footer />
+  <WhatsAppFloat />
+</Layout>

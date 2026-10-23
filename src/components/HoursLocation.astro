@@ -1,0 +1,68 @@
+---
+import Icon from './Icon.astro';
+import { business, hours, fullAddress, mapsDirectionsUrl, mapsEmbedUrl, whatsappLink } from '../data/site';
+---
+<section id="contato" class="section bg-sand-100">
+  <div class="container-x">
+    <h2 class="h2 reveal max-w-3xl">Horários e localização no Centro de Indaiatuba</h2>
+
+    <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:gap-14">
+      <div class="reveal">
+        <p id="open-status" class="inline-flex items-center gap-3 bg-cream-100 px-4 py-2 font-semibold text-ink-900" role="status" aria-live="polite">
+          <span id="open-dot" class="h-3 w-3 rounded-full bg-wood-600" aria-hidden="true"></span>
+          <span id="open-text">Confira nossos horários</span>
+        </p>
+        <table class="mt-6 w-full text-left" id="hours-table" data-hours={JSON.stringify(hours)}>
+          <caption class="sr-only">Horário de funcionamento</caption>
+          <tbody>
+            {hours.map((h) => (
+              <tr data-day={h.day}>
+                <th scope="row" class="px-3 py-3 font-medium">{h.label}<span class="today-tag"></span></th>
+                <td class="px-3 py-3 text-right text-wood-700">{h.open ? `${h.open} – ${h.close}` : 'Fechado'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <address class="mt-8 not-italic text-ink-900">
+          <p class="flex gap-3"><Icon name="pin" class="mt-1 h-5 w-5 shrink-0 text-plum-800" />{fullAddress}</p>
+          <p class="mt-3 flex gap-3"><Icon name="phone" class="mt-1 h-5 w-5 shrink-0 text-plum-800" />
+            <span><a href={`tel:${business.phoneE164}`} class="link">{business.phoneDisplay}</a> · <a href={`tel:${business.phoneSecondaryE164}`} class="link">{business.phoneSecondaryDisplay}</a></span></p>
+        </address>
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+          <a href={whatsappLink()} target="_blank" rel="noopener" class="btn btn-ink"><Icon name="whatsapp" /> Agendar</a>
+          <a href={mapsDirectionsUrl} target="_blank" rel="noopener" class="btn btn-rose"><Icon name="pin" /> Como chegar</a>
+          <a href={`tel:${business.phoneE164}`} class="btn bg-cream-100 text-ink-900 hover:bg-sand-200"><Icon name="phone" /> Ligar</a>
+        </div>
+      </div>
+
+      <div class="reveal min-h-[24rem] overflow-hidden bg-cream-100" style="--d:100ms">
+        <iframe title={`Mapa: ${business.name}, ${business.address.street}`} src={mapsEmbedUrl} loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                class="h-full min-h-[24rem] w-full border-0" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { openStatus, saoPauloNow, type HourRow } from '../lib/hours';
+
+  const table = document.getElementById('hours-table')!;
+  const hours: HourRow[] = JSON.parse(table.dataset.hours!);
+
+  function update() {
+    const now = saoPauloNow();
+    const { open, closesAt } = openStatus(hours, now);
+    // The static HTML has no "today" marker: only the current day (São Paulo time) gets one, client-side.
+    table.querySelectorAll<HTMLElement>('tr').forEach((tr) => {
+      const isToday = Number(tr.dataset.day) === now.day;
+      tr.classList.toggle('bg-cream-100', isToday);
+      tr.classList.toggle('font-semibold', isToday);
+      tr.querySelector('.today-tag')!.textContent = isToday ? ' (hoje)' : '';
+    });
+    document.getElementById('open-text')!.textContent = open ? `Aberto agora · fecha às ${closesAt}` : 'Fechado agora';
+    document.getElementById('open-dot')!.className = 'h-3 w-3 rounded-full ' + (open ? 'bg-[#0f7b42]' : 'bg-plum-800');
+  }
+  update();
+  setInterval(update, 60_000);
+</script>

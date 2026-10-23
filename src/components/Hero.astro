@@ -1,0 +1,37 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+import { business, features, whatsappLink, mapsDirectionsUrl } from '../data/site';
+const ratingText = business.rating.value.toFixed(1).replace('.', ',');
+// Client photo (git-ignored until permission): lazy glob so nothing is bundled when the flag is off.
+const heroFiles = import.meta.glob<{ default: ImageMetadata }>('../assets/images/hero-interior.jpg');
+const hero = features.showClientPhotos ? (await heroFiles['../assets/images/hero-interior.jpg']()).default : null;
+---
+<section class="on-dark bg-ink-900 text-cream-100">
+  <div class="grid lg:grid-cols-[1.2fr_0.8fr]">
+    <div class="container-x flex flex-col justify-center py-14 sm:py-20 lg:ml-auto lg:mr-0 lg:w-full lg:max-w-[46rem] lg:py-28 lg:pl-8 lg:pr-14">
+      <h1 class="t-hero leading-[1.04] text-cream-100">Cuidado de verdade para o seu cabelo.</h1>
+      <p class="mt-6 max-w-xl text-[1.15rem] text-sand-300">
+        Salão unissex no Centro de Indaiatuba: corte, escova, progressiva, hidratação, unhas e estética, com um atendimento que começa escutando você.
+      </p>
+      <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
+        <a href={whatsappLink()} target="_blank" rel="noopener" class="btn btn-rose"><Icon name="whatsapp" /> Agendar pelo WhatsApp</a>
+        <a href={mapsDirectionsUrl} target="_blank" rel="noopener" class="link inline-flex min-h-11 items-center gap-2 text-cream-100"><Icon name="pin" class="h-5 w-5" /> Como chegar</a>
+      </div>
+      <p class="mt-10 font-semibold text-cream-100">
+        <a href={business.mapsUrl} target="_blank" rel="noopener" class="hover:underline">{ratingText} <span class="text-rose-400" aria-hidden="true">★</span> · {business.rating.count} avaliações no Google</a>
+      </p>
+    </div>
+    <div class="relative min-h-[22rem] lg:min-h-[40rem]">
+      {hero ? (
+        <Image src={hero} alt="Cabelo longo e liso com reflexos dourados, visto de costas, dentro do Studio Diva's Hair" widths={[480, 720, 1000, 1400]}
+               sizes="(min-width: 1024px) 48vw, 100vw" loading="eager" fetchpriority="high" class="absolute inset-0 h-full w-full object-cover object-[50%_30%]" />
+      ) : (
+        <div class="absolute inset-0 grid place-items-center bg-plum-800" aria-hidden="true">
+          <Logo file="logo-stacked-reversed.svg" alt="" height={190} class="h-auto w-[min(70%,22rem)]" />
+        </div>
+      )}
+    </div>
+  </div>
+</section>

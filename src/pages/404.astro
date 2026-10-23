@@ -1,0 +1,20 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Icon from '../components/Icon.astro';
+import { whatsappLink } from '../data/site';
+import { withBase } from '../lib/url';
+---
+<Layout title="Página não encontrada | Studio Diva's Hair" description="A página que você procura não foi encontrada." noindex>
+  <Header />
+  <main id="conteudo" class="container-x grid min-h-[60vh] content-center gap-5 py-20">
+    <h1 class="t-h1 text-plum-800">Ops, essa página não existe</h1>
+    <p class="max-w-lg text-lg text-wood-700">Mas o nosso atendimento está a um toque de distância.</p>
+    <div class="flex flex-col gap-3 sm:flex-row">
+      <a href={withBase('')} class="btn btn-ink">Voltar ao início</a>
+      <a href={whatsappLink()} target="_blank" rel="noopener" class="btn btn-rose"><Icon name="whatsapp" /> Agendar pelo WhatsApp</a>
+    </div>
+  </main>
+  <Footer />
+</Layout>

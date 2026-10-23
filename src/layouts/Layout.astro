@@ -1,0 +1,100 @@
+---
+import '../styles/global.css';
+import '@fontsource/bodoni-moda/latin-600.css';
+import '@fontsource/hanken-grotesk/latin-400.css';
+import '@fontsource/hanken-grotesk/latin-500.css';
+import '@fontsource/hanken-grotesk/latin-600.css';
+import serifWoff from '@fontsource/bodoni-moda/files/bodoni-moda-latin-600-normal.woff2?url';
+import sansWoff from '@fontsource/hanken-grotesk/files/hanken-grotesk-latin-400-normal.woff2?url';
+import { business, hours, schemaDayNames } from '../data/site';
+import { withBase } from '../lib/url';
+
+interface Props { title: string; description: string; noindex?: boolean }
+const { title, description, noindex = false } = Astro.props;
+
+// Astro.site is the origin only; withBase() adds the '/studio-divas-hair' base path (Astro.url.pathname already includes it).
+const origin = Astro.site!.origin;
+const homeUrl = origin + withBase('');
+const canonical = new URL(Astro.url.pathname, origin).href;
+const ogImage = origin + withBase('images/og-image.jpg');
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'HairSalon',
+  '@id': `${homeUrl}#salon`,
+  name: business.legalTitle,
+  description,
+  url: homeUrl,
+  image: ogImage,
+  logo: origin + withBase('icon-512.png'),
+  telephone: [business.phoneE164, business.phoneSecondaryE164],
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: business.address.street,
+    addressLocality: business.address.city,
+    addressRegion: business.address.state,
+    postalCode: business.address.zip,
+    addressCountry: business.address.country,
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: business.geo.lat, longitude: business.geo.lng },
+  openingHoursSpecification: hours
+    .filter((h) => h.open && h.close)
+    .map((h) => ({ '@type': 'OpeningHoursSpecification', dayOfWeek: schemaDayNames[h.day], opens: h.open, closes: h.close })),
+  aggregateRating: { '@type': 'AggregateRating', ratingValue: business.rating.value.toFixed(1), reviewCount: business.rating.count, bestRating: '5' },
+  hasMap: business.mapsUrl,
+  sameAs: [business.mapsUrl, business.instagramUrl],
+};
+---
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
+    <meta name="theme-color" content="#1b141c" />
+
+    <link rel="icon" href={withBase('favicon.svg')} type="image/svg+xml" />
+    <link rel="icon" href={withBase('favicon-32.png')} sizes="32x32" type="image/png" />
+    <link rel="icon" href={withBase('favicon-16.png')} sizes="16x16" type="image/png" />
+    <link rel="apple-touch-icon" href={withBase('apple-touch-icon.png')} />
+    <link rel="manifest" href={withBase('site.webmanifest')} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content={business.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Studio Diva's Hair — salão de beleza unissex em Indaiatuba" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Self-hosted fonts (Fontsource, latin subset, font-display: swap); the two above-the-fold files are preloaded. -->
+    <link rel="preload" as="font" type="font/woff2" href={serifWoff} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={sansWoff} crossorigin />
+
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    {!noindex && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+  </head>
+  <body>
+    <a href="#conteudo" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:bg-cream-100 focus:px-4 focus:py-2">Pular para o conteúdo</a>
+    <slot />
+    <script>
+      const els = document.querySelectorAll<HTMLElement>('.reveal');
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          for (const e of entries) if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      } else els.forEach((el) => el.classList.add('is-visible'));
+    </script>
+  </body>
+</html>

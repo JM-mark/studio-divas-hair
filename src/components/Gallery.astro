@@ -1,0 +1,50 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Icon from './Icon.astro';
+import { gallery } from '../data/site';
+
+// Lazy glob so the photos are only bundled when this component is actually rendered (flag on).
+const files = import.meta.glob<{ default: ImageMetadata }>('../assets/images/galeria-*.jpg');
+const items = await Promise.all(
+  gallery.map(async (g) => {
+    const meta = (await files[`../assets/images/${g.file}`]()).default;
+    const big = await getImage({ src: meta, width: 1400, format: 'webp' });
+    return { ...g, meta, big: big.src };
+  }),
+);
+// Bento layout: the first photo is the tall feature.
+const spans = ['md:row-span-2', '', '', 'md:col-span-2'];
+---
+<section id="galeria" class="section">
+  <div class="container-x">
+    <div class="reveal max-w-2xl">
+      <h2 class="h2">Alguns resultados</h2>
+      <p class="mt-4 text-lg text-wood-700">Cabelo, cor e unhas feitos no estúdio. Toque numa foto para ampliar.</p>
+    </div>
+    <ul class="mt-10 grid grid-cols-2 gap-3 md:grid-cols-3 md:grid-rows-[repeat(2,minmax(0,22rem))] md:gap-4">
+      {items.map((g, i) => (
+        <li class:list={['reveal zoom overflow-hidden bg-sand-100', spans[i]]} style={`--d:${i * 70}ms`}>
+          <button type="button" class="gallery-item block h-full w-full" data-full={g.big} data-alt={g.alt} aria-label={`Ampliar: ${g.alt}`}>
+            <Image src={g.meta} alt={g.alt} widths={[360, 560, 800]} sizes="(min-width: 768px) 33vw, 50vw" loading="lazy" class="aspect-[3/4] h-full w-full object-cover md:aspect-auto" />
+          </button>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <dialog id="lightbox" class="m-auto max-h-[92vh] w-[min(94vw,56rem)] bg-cream-100 p-3 backdrop:bg-black/80" aria-label="Foto ampliada">
+    <form method="dialog" class="flex justify-end">
+      <button class="grid h-11 w-11 place-items-center text-plum-800 hover:bg-sand-100" aria-label="Fechar"><Icon name="close" class="h-6 w-6" /></button>
+    </form>
+    <img id="lightbox-img" alt="" class="mx-auto max-h-[78vh] w-auto max-w-full object-contain" />
+  </dialog>
+</section>
+
+<script>
+  const dlg = document.getElementById('lightbox') as HTMLDialogElement;
+  const img = document.getElementById('lightbox-img') as HTMLImageElement;
+  document.querySelectorAll<HTMLElement>('.gallery-item').forEach((b) =>
+    b.addEventListener('click', () => { img.src = b.dataset.full!; img.alt = b.dataset.alt ?? ''; dlg.showModal(); }),
+  );
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+</script>

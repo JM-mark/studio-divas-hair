@@ -1,0 +1,40 @@
+@import 'tailwindcss';
+@import './brand-theme.css'; /* generated from brand/tokens.json */
+
+@layer base {
+  html { scroll-behavior: smooth; scroll-padding-top: 5rem; -webkit-text-size-adjust: 100%; }
+  body { background: var(--color-cream-100); color: var(--color-ink-900); font-family: var(--font-sans); font-size: var(--text-body); line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 1.08; letter-spacing: -0.01em; text-wrap: balance; }
+  :focus-visible { outline: 3px solid var(--color-plum-800); outline-offset: 3px; }
+  .on-dark :focus-visible { outline-color: var(--color-rose-400); }
+  img { max-width: 100%; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+}
+
+@layer components {
+  .container-x { width: min(100% - 2rem, 76rem); margin-inline: auto; }
+  .section { padding-block: clamp(4.5rem, 10vw, 8rem); }
+  .h2 { font-size: var(--text-h2); color: var(--color-plum-800); }
+  .t-display { font-size: var(--text-display); }
+  .t-hero { font-size: clamp(2.05rem, 5vw, 4.25rem); }
+  .t-h1 { font-size: var(--text-h1); }
+  .on-dark .h2, .on-dark h3 { color: var(--color-cream-100); }
+  /* Buttons: flat rectangles, echoing the STUDIO tag of the logo. */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.25rem; padding: .8rem 1.6rem; font-weight: 600; transition: background-color .2s, transform .15s; }
+  .btn:active { transform: translateY(1px); }
+  .btn-rose { background: var(--color-rose-400); color: var(--color-ink-900); }
+  .btn-rose:hover { background: var(--color-rose-300); }
+  .btn-ink { background: var(--color-ink-900); color: var(--color-cream-100); }
+  .btn-ink:hover { background: var(--color-plum-800); }
+  .link { font-weight: 600; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px; text-decoration-color: var(--color-rose-400); }
+  .on-dark .link { text-decoration-color: var(--color-rose-400); }
+  .link:hover { text-decoration-color: currentColor; }
+}
+
+/* Scroll reveal: hidden only when JS runs and motion is allowed; staggered with --d. */
+@media (prefers-reduced-motion: no-preference) {
+  .js .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease var(--d, 0ms), transform .8s cubic-bezier(.2, .7, .2, 1) var(--d, 0ms); }
+  .js .reveal.is-visible { opacity: 1; transform: none; }
+  .zoom img { transition: transform .8s cubic-bezier(.2, .7, .2, 1); }
+  .zoom:hover img { transform: scale(1.04); }
+}

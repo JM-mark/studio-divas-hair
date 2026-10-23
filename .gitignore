@@ -1,0 +1,13 @@
+node_modules
+dist
+.astro
+.env
+.env.*
+!.env.example
+.wrangler
+lh-*.json
+
+# Client-uploaded photos pending permission: never committed, never published (features.showClientPhotos, see README).
+src/assets/images/galeria-*.jpg
+src/assets/images/hero-interior.jpg
+src/assets/images/fachada.jpg
