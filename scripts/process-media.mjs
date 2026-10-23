@@ -18,7 +18,7 @@ const crops = {
   conversa:    [{ n: 'd', ratio: 16 / 10, fx: .5, fy: .45, widths: [1280, 2000] }, { n: 'm', ratio: 9 / 16, fx: .66, fy: .5, widths: [640, 900] }],
   diagnostico: [{ n: 'd', ratio: 16 / 10, fx: .5, fy: .62, widths: [1280, 2000] }, { n: 'm', ratio: 9 / 16, fx: .5, fy: .5, widths: [640, 900] }],
   cuidado:     [{ n: 'd', ratio: 16 / 10, fx: .5, fy: .5, widths: [1280, 2000] }, { n: 'm', ratio: 9 / 16, fx: .68, fy: .5, widths: [640, 900] }],
-  resultado:   [{ n: 'd', ratio: 16 / 10, fx: .5, fy: .42, widths: [1280, 2000] }, { n: 'm', ratio: 9 / 16, fx: .64, fy: .5, widths: [640, 900] }],
+  resultado:   [{ n: 'd', ratio: 16 / 10, fx: .5, fy: .31, widths: [1280, 2000] }, { n: 'm', ratio: 9 / 16, fx: .56, fy: .5, widths: [640, 900] }],
   cabelo:      [{ n: 'c', ratio: 4 / 5, fx: .5, fy: .3, widths: [600, 900] }],
   unhas:       [{ n: 'c', ratio: 4 / 5, fx: .5, fy: .5, widths: [600, 900] }],
   estetica:    [{ n: 'c', ratio: 4 / 5, fx: .5, fy: .42, widths: [600, 900] }],

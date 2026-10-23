@@ -24,7 +24,7 @@ import { business, hours, fullAddress, mapsDirectionsUrl, mapsEmbedUrl, whatsapp
                 {hours.filter((h) => h.day !== 0).map((h) => (
                   <tr data-day={h.day}>
                     <th scope="row">{h.label}<span class="today-tag"></span></th>
-                    <td>{h.open ? `${h.open} – ${h.close}` : 'Fechado'}</td>
+                    <td>{h.open ? `${h.open} às ${h.close}` : 'Fechado'}</td>
                   </tr>
                 ))}
               </tbody>

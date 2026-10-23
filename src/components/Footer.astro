@@ -9,7 +9,7 @@ const year = new Date().getFullYear();
   <div class="wrap">
     <div class="footer__grid">
       <div>
-        <a href={withBase('')} class="logo" aria-label="Studio Diva's Hair – início"><Logo alt="" height={64} /></a>
+        <a href={withBase('')} class="logo" aria-label="Studio Diva's Hair, início"><Logo alt="" height={64} /></a>
         <p style="margin-top:18px;max-width:320px">Salão de beleza unissex no Centro de Indaiatuba, com atendimento personalizado em cada visita.</p>
       </div>
       <div>
@@ -24,13 +24,13 @@ const year = new Date().getFullYear();
       <div>
         <h2>Horários</h2>
         <ul class="footer__hours">
-          {hours.filter((h) => h.open).map((h) => <li>{h.label}: {h.open}–{h.close}</li>)}
+          {hours.filter((h) => h.open).map((h) => <li>{h.label}: {h.open} às {h.close}</li>)}
           <li>Segunda: fechado</li>
         </ul>
       </div>
     </div>
     <div class="footer__copy">
-      <p>© {year} {business.legalTitle}. Todos os direitos reservados.</p>
+      <p>© {year} {business.name}. Todos os direitos reservados.</p>
       <p><a href={withBase('creditos/')}>Créditos das imagens</a></p>
     </div>
   </div>

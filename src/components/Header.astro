@@ -1,7 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import Logo from './Logo.astro';
-import { navLinks, whatsappLink } from '../data/site';
+import { business, navLinks, whatsappLink } from '../data/site';
 import { withBase } from '../lib/url';
 interface Props { solid?: boolean }
 const { solid = false } = Astro.props;
@@ -9,19 +9,21 @@ const home = withBase('');
 ---
 <header class:list={['header', { 'header--solid': solid }]} id="header">
   <div class="wrap">
-    <a href={home} class="logo" aria-label="Studio Diva's Hair – início"><Logo alt="" height={46} /></a>
+    <a href={home} class="logo" aria-label="Studio Diva's Hair, início"><Logo alt="" height={46} /></a>
     <nav class="nav" aria-label="Principal">
       {navLinks.map((l) => <a href={home + l.href}>{l.label}</a>)}
     </nav>
     <div class="header__cta">
-      <a class="btn btn--gold btn--sm" href={whatsappLink()} target="_blank" rel="noopener">
-        <Icon name="whatsapp" /><span class="long">Agendar pelo WhatsApp</span><span class="short">Agendar</span>
-      </a>
+      <a class="icon-btn icon-btn--gold" href={whatsappLink()} target="_blank" rel="noopener" aria-label="Agendar pelo WhatsApp"><Icon name="whatsapp" /></a>
+      <a class="icon-btn icon-btn--line" href={business.instagramUrl} target="_blank" rel="noopener" aria-label="Instagram do Studio Diva's Hair"><Icon name="instagram" /></a>
       <button class="burger" id="burger" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="drawer"><span></span></button>
     </div>
   </div>
 </header>
 <div class="drawer" id="drawer" aria-hidden="true">
   {navLinks.map((l) => <a class="dl" href={home + l.href}>{l.label}</a>)}
-  <a class="btn btn--gold" href={whatsappLink()} target="_blank" rel="noopener"><Icon name="whatsapp" />Agendar pelo WhatsApp</a>
+  <div class="drawer__social">
+    <a class="btn btn--gold" href={whatsappLink()} target="_blank" rel="noopener"><Icon name="whatsapp" />WhatsApp</a>
+    <a class="btn btn--ghost" href={business.instagramUrl} target="_blank" rel="noopener"><Icon name="instagram" />Instagram</a>
+  </div>
 </div>

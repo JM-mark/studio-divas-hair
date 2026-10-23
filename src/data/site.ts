@@ -1,7 +1,7 @@
 import { SITE_URL } from './site-url.mjs';
 
 /**
- * Single source of truth for the site. Edit here — nothing else needs to change.
+ * Single source of truth for the site. Edit here; nothing else needs to change.
  * Items marked TODO(owner) are placeholders or points the salon owner must confirm.
  */
 
@@ -42,7 +42,7 @@ export const whatsappLink = (message: string = bookingMessage) =>
 export const mapsDirectionsUrl = business.mapsUrl;
 export const mapsEmbedUrl = `https://www.google.com/maps?q=${business.geo.lat},${business.geo.lng}&z=17&hl=pt-BR&output=embed`;
 
-export const fullAddress = `${business.address.street} – ${business.address.district}, ${business.address.city} – ${business.address.state}, ${business.address.zip}`;
+export const fullAddress = `${business.address.street}, ${business.address.district}, ${business.address.city}, ${business.address.state}, ${business.address.zip}`;
 
 /** day: 0 = Domingo … 6 = Sábado (JS getDay order). open/close in 24h "HH:MM"; null = fechado. */
 export const hours: { day: number; label: string; open: string | null; close: string | null }[] = [
@@ -107,8 +107,8 @@ export const about = {
   title: ['Do primeiro oi ao ', 'último detalhe'],
   paragraphs: [
     "No Studio Diva's Hair, um salão unissex no Centro de Indaiatuba, cada atendimento é pensado para você. A Adriana, a Dri, recebe cada cliente com carinho e atenção, escuta o que você deseja e orienta com sinceridade sobre o melhor caminho para os seus fios.",
-    'O objetivo é simples: que você saia daqui se sentindo bem, bonita e pronta para qualquer ocasião — e com dicas práticas para cuidar do cabelo em casa.',
-    'Do corte ao cuidado com as unhas, passando por tratamentos e estética, venha sentir a diferença de um atendimento personalizado.',
+    'O objetivo é simples: que você saia daqui se sentindo bem, bonita e pronta para qualquer ocasião, com dicas práticas para cuidar do cabelo em casa.',
+    'Do corte às unhas, dos tratamentos à estética, venha sentir a diferença de um atendimento feito com calma e atenção.',
   ],
 };
 
@@ -137,13 +137,13 @@ export const heroReview = { quote: 'A Adri além de ser uma ótima profissional,
 /** The four pinned chapters. `key` = image set in public/media (see src/data/image-credits.ts). title = [plain, italic accent]. */
 export const chapters = [
   { n: '01', label: 'A Conversa', key: 'conversa', title: ['Tudo começa ', 'ouvindo você'],
-    text: 'Escutamos o que você deseja, entendemos a rotina dos seus fios e explicamos cada passo antes de começar.' },
+    text: 'Antes de qualquer tesoura ou produto, a gente conversa. Você conta o que deseja e nós explicamos cada passo com clareza.' },
   { n: '02', label: 'O Diagnóstico', key: 'diagnostico', title: ['Cada fio ', 'tem uma história'],
-    text: 'Olhamos com calma o seu cabelo para indicar só o que faz sentido para você, com sinceridade.' },
+    text: 'Olhamos o seu cabelo com calma e indicamos só o que faz sentido para ele, com toda sinceridade.' },
   { n: '03', label: 'O Cuidado', key: 'cuidado', title: ['Capricho em ', 'cada detalhe'],
-    text: 'Cada etapa feita com atenção, do começo ao fim do atendimento.' },
+    text: 'Técnica, atenção e carinho do começo ao fim, para você relaxar e aproveitar o momento.' },
   { n: '04', label: 'O Resultado', key: 'resultado', title: ['Liso, leve e ', 'cheio de brilho'],
-    text: 'Fios alinhados, macios e com brilho. E dicas práticas para manter o cuidado em casa.' },
+    text: 'Fios alinhados, macios e com brilho de salão. E você sai com dicas simples para manter em casa.' },
 ] as const;
 
 /** The three service cards (one per serviceGroups entry, same ids). */
