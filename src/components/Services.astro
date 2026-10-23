@@ -1,7 +1,8 @@
 ---
 import Icon from './Icon.astro';
 import Pic from './Pic.astro';
-import { serviceGroups, serviceCards, whatsappLink } from '../data/site';
+import { serviceGroups, serviceCards, bookingAnchor } from '../data/site';
+import { withBase } from '../lib/url';
 import { photoCredits } from '../data/image-credits';
 const alt = (key: string) => photoCredits.find((c) => c.key === key)!.alt;
 ---
@@ -26,8 +27,8 @@ const alt = (key: string) => photoCredits.find((c) => c.key === key)!.alt;
                 {group.items.map((s, k) => <li style={`--n:${Math.max(0, k - 5)}`}>{s.name}</li>)}
               </ul>
               <button class="chips__toggle" type="button" data-chips-toggle hidden aria-expanded="false">Ver todos os serviços</button>
-              <a class="btn btn--gold" href={whatsappLink(`Olá! Gostaria de agendar um horário de ${card.ask} no Studio Diva's Hair.`)} target="_blank" rel="noopener">
-                <Icon name="whatsapp" />Agendar<span class="sr-only"> {card.ask} pelo WhatsApp</span>
+              <a class="btn btn--gold" href={withBase('') + bookingAnchor} data-book data-book-category={card.id}>
+                <Icon name="calendar" />Agendar<span class="sr-only"> {card.ask}</span>
               </a>
             </div>
           </article>

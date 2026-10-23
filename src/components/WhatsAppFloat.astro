@@ -1,7 +1,8 @@
 ---
 import Icon from './Icon.astro';
-import { whatsappLink } from '../data/site';
+import { bookingAnchor } from '../data/site';
+import { withBase } from '../lib/url';
 ---
-<a href={whatsappLink()} target="_blank" rel="noopener" class="wa-float" id="waFloat" aria-label="Agendar pelo WhatsApp">
-  <Icon name="whatsapp" /><span>WhatsApp</span>
+<a href={withBase('') + bookingAnchor} data-book class="wa-float" id="waFloat" aria-label="Agendar horário">
+  <Icon name="calendar" /><span>Agendar</span>
 </a>

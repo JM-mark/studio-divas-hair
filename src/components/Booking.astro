@@ -1,0 +1,95 @@
+---
+import Icon from './Icon.astro';
+import { serviceGroups, questionLink, bookingAnchor } from '../data/site';
+---
+<section id={bookingAnchor.slice(1)} class="book" aria-labelledby="book-title">
+  <div class="wrap">
+    <div class="head head--center reveal">
+      <span class="eyebrow">Agendamento</span>
+      <h2 class="section-title" id="book-title">Agende seu <em>horário</em></h2>
+      <p class="section-lead">Escolha o serviço, o dia e o horário. A Dri confirma o seu pedido pelo WhatsApp.</p>
+    </div>
+
+    <noscript>
+      <p class="book__noscript">Para agendar por aqui, ative o JavaScript. Ou <a href={questionLink} target="_blank" rel="noopener">fale com a gente pelo WhatsApp</a>.</p>
+    </noscript>
+
+    <form id="bookForm" class="book__form" novalidate autocomplete="on">
+      <fieldset class="step reveal" id="stepService" data-step="serviço">
+        <legend><span class="step__n" aria-hidden="true">1</span>Serviço</legend>
+        <p class="step__hint">Toque no serviço que você quer.</p>
+        <div class="svc-groups">
+          {serviceGroups.map((g) => (
+            <div class="svc-group" data-category={g.id}>
+              <h3 class="svc-group__t">{g.title}</h3>
+              <div class="chips-pick">
+                {g.items.map((s) => (
+                  <label class="pick">
+                    <input type="radio" name="servico" value={s.name} />
+                    <span>{s.name}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+        <p class="step__msg" role="alert" hidden></p>
+      </fieldset>
+
+      <fieldset class="step reveal" id="stepDay" data-step="dia">
+        <legend><span class="step__n" aria-hidden="true">2</span>Dia</legend>
+        <div class="strip-wrap">
+          <div class="days" id="days" aria-busy="true"></div>
+          <div class="strip-ctrl">
+            <button class="arrow" type="button" id="daysPrev" aria-label="Dias anteriores"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button>
+            <button class="arrow" type="button" id="daysNext" aria-label="Próximos dias"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          </div>
+        </div>
+        <p class="step__hint">Segunda e domingo estamos fechados.</p>
+        <p class="step__msg" role="alert" hidden></p>
+      </fieldset>
+
+      <fieldset class="step reveal" id="stepTime" data-step="horário">
+        <legend><span class="step__n" aria-hidden="true">3</span>Horário</legend>
+        <div class="times" id="times"><p class="times__empty">Escolha um dia para ver os horários.</p></div>
+        <label class="field field--select">
+          <span class="field__l">2ª opção de horário <small>(opcional)</small></span>
+          <select id="second" disabled>
+            <option value="">Sem 2ª opção</option>
+          </select>
+        </label>
+        <p class="step__hint" id="timeNotice" role="status" aria-live="polite"></p>
+        <p class="step__msg" role="alert" hidden></p>
+      </fieldset>
+
+      <fieldset class="step reveal" id="stepData" data-step="seu nome">
+        <legend><span class="step__n" aria-hidden="true">4</span>Seus dados</legend>
+        <label class="field">
+          <span class="field__l">Seu nome</span>
+          <input type="text" id="bookName" name="nome" autocomplete="given-name" maxlength="60" required aria-describedby="nameErr" placeholder="Como podemos te chamar?" />
+          <span class="field__err" id="nameErr" hidden>Use pelo menos 2 letras.</span>
+        </label>
+        <label class="field">
+          <span class="field__l">Observação <small>(opcional)</small></span>
+          <textarea id="bookNote" name="observacao" maxlength="200" rows="2" placeholder="Ex.: primeira vez, cabelo longo"></textarea>
+        </label>
+        <p class="step__msg" role="alert" hidden></p>
+      </fieldset>
+
+      <div class="book__summary reveal" aria-labelledby="sumTitle">
+        <h3 id="sumTitle" class="book__sum-t">Resumo do pedido</h3>
+        <p class="book__sum-line" id="sumLine" hidden></p>
+        <dl class="sum" id="sum"></dl>
+      </div>
+
+      <div class="book__send reveal">
+        <p class="book__missing" id="bookMissing" role="status" aria-live="polite"></p>
+        <button class="btn btn--gold btn--send" type="submit" id="bookSend" aria-disabled="true"><Icon name="whatsapp" />Enviar pedido pelo WhatsApp</button>
+        <p class="book__note">O horário é confirmado pela Dri no WhatsApp.</p>
+        <p class="book__sent" id="bookSent" role="status" hidden>Abrimos o WhatsApp com o seu pedido. Se ele não abriu, <a id="bookSentLink" href="#" target="_blank" rel="noopener">toque aqui</a>.</p>
+        <p class="book__privacy">Seus dados não são guardados: eles só vão na mensagem do WhatsApp.</p>
+        <a class="book__ask" href={questionLink} target="_blank" rel="noopener"><Icon name="whatsapp" />Tirar uma dúvida pelo WhatsApp</a>
+      </div>
+    </form>
+  </div>
+</section>

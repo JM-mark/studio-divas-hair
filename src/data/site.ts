@@ -34,10 +34,15 @@ export const business = {
   instagramHandle: '@studiodivascabeloecorpo',
 } as const;
 
-export const bookingMessage = "Olá! Gostaria de agendar um horário no Studio Diva's Hair.";
+/** wa.me link for an already-composed message. Booking messages are only built by src/lib/booking.ts, from validated values. */
+export const whatsappUrl = (message: string) => `https://wa.me/${business.whatsappNumber}?text=${encodeURIComponent(message)}`;
 
-export const whatsappLink = (message: string = bookingMessage) =>
-  `https://wa.me/${business.whatsappNumber}?text=${encodeURIComponent(message)}`;
+/** The one static WhatsApp link on the site: general questions, never an empty or generic booking message. */
+export const questionMessage = 'Olá! Vim pelo site e tenho uma dúvida:';
+export const questionLink = whatsappUrl(questionMessage);
+
+/** Every booking CTA points here: the guided form (src/components/Booking.astro). */
+export const bookingAnchor = '#agendar-horario';
 
 export const mapsDirectionsUrl = business.mapsUrl;
 export const mapsEmbedUrl = `https://www.google.com/maps?q=${business.geo.lat},${business.geo.lng}&z=17&hl=pt-BR&output=embed`;

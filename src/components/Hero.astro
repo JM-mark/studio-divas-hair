@@ -1,6 +1,6 @@
 ---
 import Icon from './Icon.astro';
-import { business, heroReview, whatsappLink } from '../data/site';
+import { business, heroReview, bookingAnchor } from '../data/site';
 import { withBase } from '../lib/url';
 const ratingText = business.rating.value.toFixed(1).replace('.', ',');
 const m = (f: string) => withBase(`media/${f}`);
@@ -30,7 +30,7 @@ const m = (f: string) => withBase(`media/${f}`);
         </h1>
         <p class="hero__sub cas" style="--d:.32s">Salão unissex no Centro de Indaiatuba. Corte, escova, progressiva, hidratação, unhas e estética, num atendimento que começa escutando você.</p>
         <div class="hero__actions cas" style="--d:.4s">
-          <a class="btn btn--gold" href={whatsappLink()} target="_blank" rel="noopener"><Icon name="whatsapp" />Agendar pelo WhatsApp</a>
+          <a class="btn btn--gold" href={withBase('') + bookingAnchor} data-book><Icon name="calendar" />Agendar horário</a>
           <a class="btn btn--ghost" href={business.instagramUrl} target="_blank" rel="noopener"><Icon name="instagram" />Instagram</a>
         </div>
       </div>

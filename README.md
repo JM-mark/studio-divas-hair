@@ -25,6 +25,14 @@ Almost everything lives in **`src/data/site.ts`**: contact, hours, services (and
 - **Brand:** logos in `public/logo/` (the reversed version is used over dark and photos).
 - **`/marca`** (brand guidelines, `noindex`): `MSYS_NO_PATHCONV=1 node ../brand/guidelines-build.mjs --site public/marca --back /studio-divas-hair/`.
 
+## Guided booking ("Agende seu horário")
+
+Static, no backend: `src/components/Booking.astro` (form) + `src/scripts/booking.ts` (behaviour) + two pure modules with unit tests:
+`src/lib/slots.ts` (which days and times can be requested, from the opening hours in `site.ts`, 30-minute steps, today's past times and a 1-hour buffer hidden, São Paulo time) and `src/lib/booking.ts` (validation and the WhatsApp message, built only from validated values; `buildMessage` returns `null` unless service, day, time and name are all valid right now).
+- Every booking CTA on the site is a link to `#agendar-horario` (`data-book`); service cards pass `data-book-category` and the form highlights that category. The only static WhatsApp link is the general-questions one (`questionLink` in `site.ts`, prefilled "Olá! Vim pelo site e tenho uma dúvida:").
+- A slot means "the salon is open", not "the slot is free": the Dri confirms on WhatsApp (the page says so). To use real availability later (Google Agenda booking page, a salon booking system), replace `slotsForDate` in `src/lib/slots.ts` (see the TODO at the top of that file); nothing else needs to change.
+- Nothing is stored or sent anywhere except the `wa.me` link the visitor opens.
+
 ## Deploy (GitHub Pages)
 
 Push to `main`. `.github/workflows/deploy.yml` builds with `withastro/action` and publishes with `actions/deploy-pages` (Pages source is set to "GitHub Actions"). The live URL is above.

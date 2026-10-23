@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Icon from '../components/Icon.astro';
-import { whatsappLink } from '../data/site';
+import { bookingAnchor } from '../data/site';
 import { withBase } from '../lib/url';
 ---
 <Layout title="Página não encontrada | Studio Diva's Hair" description="A página que você procura não foi encontrada." noindex>
@@ -14,7 +14,7 @@ import { withBase } from '../lib/url';
       <p class="lead">Mas o nosso atendimento está a um toque de distância.</p>
       <div class="page__btns">
         <a href={withBase('')} class="btn btn--line">Voltar ao início</a>
-        <a href={whatsappLink()} target="_blank" rel="noopener" class="btn btn--gold"><Icon name="whatsapp" />Agendar pelo WhatsApp</a>
+        <a href={withBase('') + bookingAnchor} class="btn btn--gold"><Icon name="calendar" />Agendar horário</a>
       </div>
     </div>
   </main>

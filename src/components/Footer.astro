@@ -2,7 +2,7 @@
 import Icon from './Icon.astro';
 import Logo from './Logo.astro';
 import { withBase } from '../lib/url';
-import { business, fullAddress, hours, mapsDirectionsUrl } from '../data/site';
+import { business, fullAddress, hours, mapsDirectionsUrl, bookingAnchor } from '../data/site';
 const year = new Date().getFullYear();
 ---
 <footer class="footer">
@@ -17,6 +17,7 @@ const year = new Date().getFullYear();
         <address>
           <p>{fullAddress}</p>
           <p><a class="tel" href={`tel:${business.phoneE164}`}>{business.phoneDisplay}</a> · <a class="tel" href={`tel:${business.phoneSecondaryE164}`}>{business.phoneSecondaryDisplay}</a></p>
+          <p><a href={withBase('') + bookingAnchor} data-book style="text-decoration:underline;text-underline-offset:3px">Agendar horário</a></p>
           <p><a href={mapsDirectionsUrl} target="_blank" rel="noopener" style="text-decoration:underline;text-underline-offset:3px">Como chegar</a></p>
         </address>
         <div class="social" style="margin-top:12px"><a href={business.instagramUrl} target="_blank" rel="noopener"><Icon name="instagram" />{business.instagramHandle}</a></div>

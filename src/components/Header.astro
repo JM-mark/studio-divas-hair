@@ -1,7 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import Logo from './Logo.astro';
-import { business, navLinks, whatsappLink } from '../data/site';
+import { business, navLinks, bookingAnchor } from '../data/site';
 import { withBase } from '../lib/url';
 interface Props { solid?: boolean }
 const { solid = false } = Astro.props;
@@ -14,7 +14,7 @@ const home = withBase('');
       {navLinks.map((l) => <a href={home + l.href}>{l.label}</a>)}
     </nav>
     <div class="header__cta">
-      <a class="icon-btn icon-btn--gold" href={whatsappLink()} target="_blank" rel="noopener" aria-label="Agendar pelo WhatsApp"><Icon name="whatsapp" /></a>
+      <a class="icon-btn icon-btn--gold" href={home + bookingAnchor} data-book aria-label="Agendar horário"><Icon name="calendar" /></a>
       <a class="icon-btn icon-btn--line" href={business.instagramUrl} target="_blank" rel="noopener" aria-label="Instagram do Studio Diva's Hair"><Icon name="instagram" /></a>
       <button class="burger" id="burger" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="drawer"><span></span></button>
     </div>
@@ -23,7 +23,7 @@ const home = withBase('');
 <div class="drawer" id="drawer" aria-hidden="true">
   {navLinks.map((l, i) => <a class="dl" href={home + l.href} style={`--i:${i}`}>{l.label}</a>)}
   <div class="drawer__social" style={`--i:${navLinks.length}`}>
-    <a class="btn btn--gold" href={whatsappLink()} target="_blank" rel="noopener"><Icon name="whatsapp" />WhatsApp</a>
+    <a class="btn btn--gold" href={home + bookingAnchor} data-book><Icon name="calendar" />Agendar</a>
     <a class="btn btn--ghost" href={business.instagramUrl} target="_blank" rel="noopener"><Icon name="instagram" />Instagram</a>
   </div>
 </div>
