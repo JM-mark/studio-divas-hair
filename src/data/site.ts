@@ -112,14 +112,14 @@ export const about = {
   ],
 };
 
-export interface Testimonial { quote: string; author: string; when: string; reply?: string }
+export interface Testimonial { quote: string; author: string; when: string }
 
 // Real public Google reviews (Google Maps listing), copied as written.
 // TODO(owner): confirm each client's permission to be quoted (names are shortened to first name + initial).
 export const testimonials: Testimonial[] = [
   { quote: 'Adorei a experiência. A Adri além de ser uma ótima profissional, também é uma pessoa incrível, simpática, me deixou super a vontade, além de me dar várias dicas de como cuidar do meu cabelo.', author: 'Viviane Q.', when: 'há 7 meses' },
-  { quote: 'Cabelinho devidamente cortado, hidratado e matizado. Me sinto pronta para o Réveillon. O atendimento da Dri é impecável, ela é extremamente atenciosa e querida e tudo o que ela faz fica perfeito 🤍…', author: 'Maria M.', when: 'há 10 meses', reply: 'Eu que agradeço de coração pela confiança e pelo carinho… estou à disposição sempre.' },
-  { quote: 'Quero agradecer pelo carinho e capricho. Minhas unhas ficaram perfeitas e o atendimento foi excelente. Com certeza virei cliente!', author: 'Thaiane M.', when: 'há 10 meses', reply: 'Um enorme prazer em atendê-la.. Obrigada pelo carinho e confiança.' },
+  { quote: 'Cabelinho devidamente cortado, hidratado e matizado. Me sinto pronta para o Réveillon. O atendimento da Dri é impecável, ela é extremamente atenciosa e querida e tudo o que ela faz fica perfeito 🤍…', author: 'Maria M.', when: 'há 10 meses' },
+  { quote: 'Quero agradecer pelo carinho e capricho. Minhas unhas ficaram perfeitas e o atendimento foi excelente. Com certeza virei cliente!', author: 'Thaiane M.', when: 'há 10 meses' },
 ];
 
 export const navLinks = [

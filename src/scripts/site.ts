@@ -169,7 +169,7 @@ if (track) {
 /* ---------- WhatsApp pill: steps aside while a CTA sits in the bottom strip of the screen ---------- */
 const wa = $('#waFloat');
 if (wa && 'IntersectionObserver' in window) {
-  const zones = $$('.hero__actions .btn, .proof, .svc .btn, .loc__btns .btn, .cta__btns .btn, .chips__toggle, .footer a');
+  const zones = $$('.hero__actions .btn, .proof, .svc .btn, .loc__btns .btn, .cta__btns .btn, .chips__toggle, .arrow, .footer a');
   const behind = new Set<Element>();
   let obs: IntersectionObserver | undefined;
   const build = () => {

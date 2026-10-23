@@ -8,5 +8,5 @@ export default defineConfig({
   base: BASE_PATH,   // '/studio-divas-hair'
   output: 'static',
   build: { inlineStylesheets: 'always' },
-  integrations: [sitemap({ filter: (page) => !page.includes('/creditos') })],
+  integrations: [sitemap()],
 });
