@@ -1,9 +1,8 @@
 // Page behaviour (header, menu, reveal, counters, hero video, carousel, chips, WhatsApp pill, pinned chapters).
-// Motion follows the Flor de Lis reference; only prefers-reduced-motion gets the calm version.
+// Motion follows the Flor de Lis reference and is the same for everyone, on phones and desktops alike.
 const d = document;
 const $ = <T extends HTMLElement>(s: string, c: ParentNode = d) => c.querySelector<T>(s);
 const $$ = <T extends HTMLElement>(s: string, c: ParentNode = d) => Array.from(c.querySelectorAll<T>(s));
-const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const fine = matchMedia('(hover:hover) and (pointer:fine)').matches;
 
 import './booking';
@@ -16,7 +15,7 @@ const proof = $('#proof');
 let ticking = false;
 function onScroll() {
   header?.classList.toggle('is-scrolled', scrollY > 24);
-  if (!fine && !reduced && media && proof) {
+  if (!fine && media && proof) {
     const y = Math.min(scrollY, innerHeight);
     media.style.transform = `translate3d(0,${Math.min(y * 0.06, 24).toFixed(1)}px,0)`;
     proof.style.transform = `translate3d(0,${(-y * 0.06).toFixed(1)}px,0)`;
@@ -53,7 +52,7 @@ matchMedia('(min-width:1024px)').addEventListener('change', (e) => { if (e.match
 
 /* ---------- Scroll reveal (also used inside the chapters when they are not pinned) ---------- */
 const revealEls = $$('.reveal');
-if ('IntersectionObserver' in window && !reduced) {
+if ('IntersectionObserver' in window) {
   const io = new IntersectionObserver((es) => {
     es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
   }, { threshold: 0.15, rootMargin: '0px 0px -6% 0px' });
@@ -66,7 +65,7 @@ function runCount(el: HTMLElement) {
   if (el.dataset.done) return;
   el.dataset.done = '1';
   const to = parseFloat(el.dataset.to ?? ''), dec = parseInt(el.dataset.decimals ?? '0', 10);
-  if (isNaN(to) || reduced) return;
+  if (isNaN(to)) return;
   const finalTxt = fmt(to, dec), dur = 1200, t0 = performance.now();
   el.textContent = fmt(0, dec);
   (function step(now: number) {
@@ -82,7 +81,7 @@ if ('IntersectionObserver' in window) {
 }
 
 /* ---------- Hero: mouse parallax (desktop) + video that starts after load ---------- */
-if (hero && media && proof && fine && !reduced) {
+if (hero && media && proof && fine) {
   let mx = 0, my = 0, raf = 0; // one write per frame, from the latest pointer position
   hero.addEventListener('mousemove', (e) => {
     const r = hero.getBoundingClientRect();
@@ -98,28 +97,16 @@ if (hero && media && proof && fine && !reduced) {
   media.style.transition = 'transform .6s cubic-bezier(.22,.8,.24,1)';
 }
 const video = $<HTMLVideoElement>('#heroVideo');
-const pauseBtn = $<HTMLButtonElement>('#heroPause');
-let userPaused = false; // once the visitor pauses, nothing restarts the video (scrolling back included)
-function setPaused(p: boolean) {
-  userPaused = p;
-  if (!video || !pauseBtn) return;
-  pauseBtn.classList.toggle('is-paused', p);
-  const label = p ? 'Reproduzir vídeo de fundo' : 'Pausar vídeo de fundo';
-  pauseBtn.setAttribute('aria-label', label); pauseBtn.title = label;
-  if (p) video.pause(); else video.play().catch(() => {});
-}
-pauseBtn?.addEventListener('click', () => setPaused(!userPaused));
 function startVideo() {
-  if (!video || !media || reduced) return;
+  if (!video || !media) return;
   if ((navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData) return;
   video.src = (matchMedia('(min-width:900px)').matches ? media.dataset.videoD : media.dataset.videoM) ?? '';
   video.muted = true;
-  video.addEventListener('playing', () => { video.classList.add('is-playing'); if (pauseBtn) pauseBtn.hidden = false; }, { once: true });
-  video.addEventListener('error', () => { if (pauseBtn) pauseBtn.hidden = true; }); // file failed: the poster stays, no dead control
+  video.addEventListener('playing', () => video.classList.add('is-playing'), { once: true }); // until then (or if the file fails) the poster stays
   video.play().catch(() => { /* autoplay blocked: the poster stays */ });
   if ('IntersectionObserver' in window && hero) {
     new IntersectionObserver((es) => es.forEach((e) => {
-      if (!e.isIntersecting) video.pause(); else if (!userPaused) video.play().catch(() => {});
+      if (!e.isIntersecting) video.pause(); else video.play().catch(() => {});
     }), { threshold: 0.05 }).observe(hero);
   }
 }
@@ -161,7 +148,7 @@ if (track) {
     dots.appendChild(b);
   });
   const step = () => cards[0].getBoundingClientRect().width + 18;
-  const goTo = (i: number) => track.scrollTo({ left: i * step(), behavior: reduced ? 'auto' : 'smooth' });
+  const goTo = (i: number) => track.scrollTo({ left: i * step(), behavior: 'smooth' });
   const idx = () => Math.min(cards.length - 1, Math.round(track.scrollLeft / step()));
   const paint = () => { const k = idx(); $$('button', dots).forEach((b, i) => b.classList.toggle('on', i === k)); };
   const toggleCtrl = () => { ctrl.hidden = track.scrollWidth <= track.clientWidth + 2; };
@@ -206,7 +193,7 @@ function initJourney() {
   gsap.registerPlugin(ScrollTrigger);
   ScrollTrigger.config({ ignoreMobileResize: true });
   const mm = gsap.matchMedia();
-  mm.add('(prefers-reduced-motion: no-preference)', () => {
+  mm.add('(min-width: 0px)', () => {
     const sec = $('#jornada')!, stage = $('#stage')!, chs = $$('.chapter', stage), dotEls = $$('.journey__dots b'), n = chs.length;
     sec.classList.add('is-pinned');
     const imgs = chs.map((c) => $('img', c)), txts = chs.map((c) => $('.chapter__content', c)),
@@ -242,7 +229,7 @@ function initJourney() {
   addEventListener('load', () => ScrollTrigger.refresh());
   ScrollTrigger.refresh();
 }
-if (!reduced && $('#jornada')) {
+if ($('#jornada')) {
   const start = () => loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', () =>
     loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js', initJourney));
   const idle = () => ('requestIdleCallback' in window ? requestIdleCallback(start, { timeout: 2000 }) : setTimeout(start, 600));

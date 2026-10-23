@@ -10,8 +10,7 @@ import {
 const d = document;
 const section = d.getElementById(bookingAnchor.slice(1));
 const form = d.getElementById('bookForm') as HTMLFormElement | null;
-const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const behavior: ScrollBehavior = reduced ? 'auto' : 'smooth';
+const behavior: ScrollBehavior = 'smooth';
 const serviceNames = serviceGroups.flatMap((g) => g.items.map((s) => s.name));
 
 /* ---------- entry points: every booking CTA on the site (data-book) opens this form ---------- */
