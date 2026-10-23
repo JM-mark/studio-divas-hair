@@ -23,18 +23,31 @@ function onScroll() {
 }
 addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
 
-/* ---------- Mobile menu ---------- */
+/* ---------- Mobile menu: focus stays inside while it is open, the page behind is inert, Escape returns focus ---------- */
 const burger = $('#burger');
 const drawer = $('#drawer');
-function setMenu(open: boolean) {
+const behind = $$('main, footer, #waFloat, .skip'); // everything the open menu covers
+const menuStops = () => [...$$<HTMLElement>('.header a, .header button'), ...(drawer ? $$<HTMLElement>('a', drawer) : [])];
+function setMenu(open: boolean, restoreFocus = true) {
   d.body.classList.toggle('menu-open', open);
   burger?.setAttribute('aria-expanded', String(open));
+  burger?.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
   drawer?.setAttribute('aria-hidden', String(!open));
   d.body.style.overflow = open ? 'hidden' : '';
+  behind.forEach((el) => { (el as HTMLElement & { inert: boolean }).inert = open; });
+  if (!open && restoreFocus) burger?.focus();
 }
-burger?.addEventListener('click', () => setMenu(!d.body.classList.contains('menu-open')));
-drawer && $$('a', drawer).forEach((a) => a.addEventListener('click', () => setMenu(false)));
-d.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
+burger?.addEventListener('click', () => setMenu(!d.body.classList.contains('menu-open'), false));
+drawer && $$('a', drawer).forEach((a) => a.addEventListener('click', () => setMenu(false, false)));
+d.addEventListener('keydown', (e) => {
+  if (!d.body.classList.contains('menu-open')) return;
+  if (e.key === 'Escape') { setMenu(false); return; }
+  if (e.key !== 'Tab') return;
+  const stops = menuStops(), first = stops[0], last = stops[stops.length - 1];
+  if (e.shiftKey && d.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && d.activeElement === last) { e.preventDefault(); first.focus(); }
+});
+matchMedia('(min-width:1024px)').addEventListener('change', (e) => { if (e.matches) setMenu(false, false); }); // menu does not exist on desktop
 
 /* ---------- Scroll reveal (also used inside the chapters when they are not pinned) ---------- */
 const revealEls = $$('.reveal');
@@ -79,15 +92,29 @@ if (hero && media && proof && fine && !reduced) {
   media.style.transition = 'transform .6s cubic-bezier(.22,.8,.24,1)';
 }
 const video = $<HTMLVideoElement>('#heroVideo');
+const pauseBtn = $<HTMLButtonElement>('#heroPause');
+let userPaused = false; // once the visitor pauses, nothing restarts the video (scrolling back included)
+function setPaused(p: boolean) {
+  userPaused = p;
+  if (!video || !pauseBtn) return;
+  pauseBtn.classList.toggle('is-paused', p);
+  const label = p ? 'Reproduzir vídeo de fundo' : 'Pausar vídeo de fundo';
+  pauseBtn.setAttribute('aria-label', label); pauseBtn.title = label;
+  if (p) video.pause(); else video.play().catch(() => {});
+}
+pauseBtn?.addEventListener('click', () => setPaused(!userPaused));
 function startVideo() {
   if (!video || !media || reduced) return;
   if ((navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData) return;
   video.src = (matchMedia('(min-width:900px)').matches ? media.dataset.videoD : media.dataset.videoM) ?? '';
   video.muted = true;
-  video.addEventListener('playing', () => video.classList.add('is-playing'), { once: true });
+  video.addEventListener('playing', () => { video.classList.add('is-playing'); if (pauseBtn) pauseBtn.hidden = false; }, { once: true });
+  video.addEventListener('error', () => { if (pauseBtn) pauseBtn.hidden = true; }); // file failed: the poster stays, no dead control
   video.play().catch(() => { /* autoplay blocked: the poster stays */ });
   if ('IntersectionObserver' in window && hero) {
-    new IntersectionObserver((es) => es.forEach((e) => { e.isIntersecting ? video.play().catch(() => {}) : video.pause(); }), { threshold: 0.05 }).observe(hero);
+    new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) video.pause(); else if (!userPaused) video.play().catch(() => {});
+    }), { threshold: 0.05 }).observe(hero);
   }
 }
 if (video) {
