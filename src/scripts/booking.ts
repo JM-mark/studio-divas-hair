@@ -149,7 +149,8 @@ function init(form: HTMLFormElement) {
       if (r.value) dd.textContent = r.value; else { dd.className = 'is-empty'; dd.textContent = r.label === '2ª opção' ? 'Sem 2ª opção' : 'Falta escolher'; }
       const b = d.createElement('button'); b.type = 'button'; b.className = 'linkbtn'; b.dataset.edit = r.step;
       b.textContent = r.value ? 'Editar' : r.cta; b.setAttribute('aria-label', `${b.textContent} ${r.label.toLowerCase()}`);
-      row.append(dt, dd, b); sumEl.append(row);
+      const act = d.createElement('dd'); act.append(b); // a <dl> row may only hold <dt>/<dd>
+      row.append(dt, dd, act); sumEl.append(row);
     }
     if (miss.length === 0) {
       sumLine.hidden = false;

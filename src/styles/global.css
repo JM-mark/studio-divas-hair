@@ -432,6 +432,7 @@ section{position:relative}
 .sum__row{display:grid;grid-template-columns:92px 1fr auto;gap:4px 12px;align-items:center;padding:4px 0;border-top:1px solid rgb(255 255 255/.12)}
 .sum dt{font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-2)}
 .sum dd{margin:0;font-weight:600;overflow-wrap:anywhere}
+.sum dd:last-child{font-weight:400}
 .sum dd.is-empty{font-weight:500;color:rgb(255 255 255/.66)}
 .linkbtn{min-height:44px;padding:0 6px;border:0;background:none;color:var(--gold-2);font-size:.88rem;font-weight:700;text-decoration:underline;text-underline-offset:4px}
 .book__send{display:grid;justify-items:center;gap:12px;margin-top:6px;text-align:center}
