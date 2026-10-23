@@ -41,8 +41,8 @@ export const whatsappUrl = (message: string) => `https://wa.me/${business.whatsa
 export const questionMessage = 'Olá! Vim pelo site e tenho uma dúvida:';
 export const questionLink = whatsappUrl(questionMessage);
 
-/** Every booking CTA points here: the guided form (src/components/Booking.astro). */
-export const bookingAnchor = '#agendar-horario';
+/** Every booking CTA links to this page (src/pages/agendar.astro): the guided form lives there, not on the home page. */
+export const bookingPath = 'agendar/';
 
 export const mapsDirectionsUrl = business.mapsUrl;
 export const mapsEmbedUrl = `https://www.google.com/maps?q=${business.geo.lat},${business.geo.lng}&z=17&hl=pt-BR&output=embed`;

@@ -1,12 +1,14 @@
 ---
 import Icon from './Icon.astro';
-import { serviceGroups, questionLink, bookingAnchor } from '../data/site';
+import { serviceGroups, questionLink } from '../data/site';
+import { withBase } from '../lib/url';
 ---
-<section id={bookingAnchor.slice(1)} class="book" aria-labelledby="book-title">
+<section id="agendar-horario" class="book book--page" aria-labelledby="book-title">
   <div class="wrap">
+    <a class="book__back" href={withBase('')}>← Voltar ao início</a>
     <div class="head head--center reveal">
       <span class="eyebrow">Agendamento</span>
-      <h2 class="section-title" id="book-title">Agende seu <em>horário</em></h2>
+      <h1 class="section-title" id="book-title">Agende seu <em>horário</em></h1>
       <p class="section-lead">Escolha o serviço, o dia e o horário. A Dri confirma o seu pedido pelo WhatsApp.</p>
     </div>
 

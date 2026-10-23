@@ -4,7 +4,7 @@ import { SITE_URL } from '../src/data/site-url.mjs';
 
 const root = (process.argv[2] ?? SITE_URL).replace(/\/?$/, '/');
 const origin = new URL(root).origin;
-const pages = ['', 'marca/'];
+const pages = ['', 'agendar/', 'marca/'];
 const seen = new Map();
 const problems = [];
 

@@ -360,6 +360,8 @@ section{position:relative}
 .book .eyebrow{color:var(--gold-2)}
 .book .section-lead{color:rgb(255 255 255/.88)}
 .book :focus-visible{outline-color:var(--gold-2)}
+.book--page{padding-top:clamp(120px,15vw,170px)}
+.book__back{display:inline-flex;align-items:center;min-height:44px;margin-bottom:18px;font-size:.82rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-2);text-decoration:underline;text-underline-offset:5px}
 .book__noscript{text-align:center;margin-bottom:20px}
 .book__noscript a,.book__sent a{text-decoration:underline;text-underline-offset:4px}
 .book__form{max-width:860px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr);gap:18px}

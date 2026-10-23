@@ -1,0 +1,19 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Booking from '../components/Booking.astro';
+import Footer from '../components/Footer.astro';
+---
+<Layout
+  title="Agendamentos | Studio Diva's Hair"
+  description="Agende seu horário no Studio Diva's Hair, em Indaiatuba: escolha o serviço, o dia e o horário. A Dri confirma o pedido pelo WhatsApp."
+>
+  <Header solid />
+  <main id="conteudo">
+    <Booking />
+  </main>
+  <Footer />
+  <script>
+    import '../scripts/booking.ts';
+  </script>
+</Layout>

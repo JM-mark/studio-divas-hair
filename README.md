@@ -29,7 +29,7 @@ Almost everything lives in **`src/data/site.ts`**: contact, hours, services (and
 
 Static, no backend: `src/components/Booking.astro` (form) + `src/scripts/booking.ts` (behaviour) + two pure modules with unit tests:
 `src/lib/slots.ts` (which days and times can be requested, from the opening hours in `site.ts`, 30-minute steps, today's past times and a 1-hour buffer hidden, São Paulo time) and `src/lib/booking.ts` (validation and the WhatsApp message, built only from validated values; `buildMessage` returns `null` unless service, day, time and name are all valid right now).
-- Every booking CTA on the site is a link to `#agendar-horario` (`data-book`); service cards pass `data-book-category` and the form highlights that category. The only static WhatsApp link is the general-questions one (`questionLink` in `site.ts`, prefilled "Olá! Vim pelo site e tenho uma dúvida:").
+- The form lives on its own page, `/agendar/` (`src/pages/agendar.astro`); the home page has no booking section. Every booking CTA on the site (header Agendamentos button, hero, service cards, floating button, final band, footer, menu, 404) links to that page; service cards add `?categoria=cabelo` and the form highlights that category. The only static WhatsApp link is the general-questions one (`questionLink` in `site.ts`, prefilled "Olá! Vim pelo site e tenho uma dúvida:").
 - A slot means "the salon is open", not "the slot is free": the Dri confirms on WhatsApp (the page says so). To use real availability later (Google Agenda booking page, a salon booking system), replace `slotsForDate` in `src/lib/slots.ts` (see the TODO at the top of that file); nothing else needs to change.
 - Nothing is stored or sent anywhere except the `wa.me` link the visitor opens.
 

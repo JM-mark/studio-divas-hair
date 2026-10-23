@@ -1,8 +1,8 @@
 ---
 import Icon from './Icon.astro';
-import { bookingAnchor } from '../data/site';
+import { bookingPath } from '../data/site';
 import { withBase } from '../lib/url';
 ---
-<a href={withBase('') + bookingAnchor} data-book class="wa-float" id="waFloat" aria-label="Agendar horário">
+<a href={withBase(bookingPath)} class="wa-float" id="waFloat" aria-label="Agendar horário">
   <Icon name="calendar" />
 </a>

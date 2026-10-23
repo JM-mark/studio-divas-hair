@@ -1,6 +1,6 @@
 // Guided booking form: service, day, time, name -> a WhatsApp message built only from validated values.
 // No backend: nothing is stored or sent anywhere except the wa.me link the visitor opens. Rules live in src/lib/*.
-import { business, hours, serviceGroups, bookingAnchor } from '../data/site';
+import { business, hours, serviceGroups } from '../data/site';
 import { saoPauloMoment, upcomingDays, slotsForDate, type BookingDay } from '../lib/slots';
 import {
   buildMessage, missingFields, whatsappBookingUrl, isValidName, cleanText, WEEKDAY_SHORT, WEEKDAY_LONG, NAME_MAX, NOTE_MAX,
@@ -8,29 +8,19 @@ import {
 } from '../lib/booking';
 
 const d = document;
-const section = d.getElementById(bookingAnchor.slice(1));
+const section = d.getElementById('agendar-horario');
 const form = d.getElementById('bookForm') as HTMLFormElement | null;
 const behavior: ScrollBehavior = 'smooth';
 const serviceNames = serviceGroups.flatMap((g) => g.items.map((s) => s.name));
 
-/* ---------- entry points: every booking CTA on the site (data-book) opens this form ---------- */
-d.addEventListener('click', (e) => {
-  const a = (e.target as Element).closest<HTMLElement>('[data-book]');
-  if (!a || !section || !form) return; // on other pages the link's own href (home + #agendar-horario) does the job
-  e.preventDefault();
-  openBooking(a.dataset.bookCategory);
-});
-
-function openBooking(category?: string) {
-  const group = category ? form!.querySelector<HTMLElement>(`.svc-group[data-category="${category}"]`) : null;
-  if (group) {
-    group.scrollIntoView({ behavior, block: 'start' });
-    group.classList.add('is-cue');
-    setTimeout(() => group.classList.remove('is-cue'), 2200);
-  } else section!.scrollIntoView({ behavior, block: 'start' });
-  history.replaceState(null, '', bookingAnchor);
-  const title = d.getElementById('book-title');
-  if (title) { title.setAttribute('tabindex', '-1'); title.focus({ preventScroll: true }); }
+/* ---------- deep link from a service card: /agendar/?categoria=cabelo highlights that category ---------- */
+function cueCategory() {
+  const category = new URLSearchParams(location.search).get('categoria');
+  const group = category ? form!.querySelector<HTMLElement>(`.svc-group[data-category="${category.replace(/[^a-z-]/g, '')}"]`) : null;
+  if (!group) return;
+  group.classList.add('is-cue');
+  setTimeout(() => group.scrollIntoView({ behavior, block: 'center' }), 350);
+  setTimeout(() => group.classList.remove('is-cue'), 2600);
 }
 
 if (section && form) init(form);
@@ -208,7 +198,7 @@ function init(form: HTMLFormElement) {
   });
 
   /* ----- start, and tick: today's list and the day strip follow the clock ----- */
-  renderDays(); renderTimes(); update();
+  renderDays(); renderTimes(); update(); cueCategory();
   setInterval(() => {
     const before = days[0]?.key + days[0]?.disabled;
     renderDays(); reconcile('clock'); renderTimes(); update();

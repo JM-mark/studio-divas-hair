@@ -1,6 +1,6 @@
 ---
 import Icon from './Icon.astro';
-import { business, fullAddress, bookingAnchor } from '../data/site';
+import { business, fullAddress, bookingPath } from '../data/site';
 import { withBase } from '../lib/url';
 ---
 <section class="cta" id="agendar">
@@ -8,7 +8,7 @@ import { withBase } from '../lib/url';
     <h2 class="section-title reveal">Seu momento de cuidado <em>começa aqui</em></h2>
     <p class="lead reveal" style="--d:.1s">Escolha o serviço, o dia e o horário em poucos toques. Atendimento personalizado, no Centro de Indaiatuba.</p>
     <div class="cta__btns reveal" style="--d:.2s">
-      <a class="btn btn--gold" href={withBase('') + bookingAnchor} data-book><Icon name="calendar" />Agendar meu horário</a>
+      <a class="btn btn--gold" href={withBase(bookingPath)}><Icon name="calendar" />Agendar meu horário</a>
       <a class="btn btn--ghost" href={business.instagramUrl} target="_blank" rel="noopener"><Icon name="instagram" />Instagram</a>
     </div>
     <p class="cta__addr reveal" style="--d:.3s"><b>{business.name}</b><br>{fullAddress}</p>
