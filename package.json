@@ -17,12 +17,10 @@
   "dependencies": {
     "@astrojs/check": "^0.9.12",
     "@astrojs/sitemap": "^3.7.4",
-    "@fontsource/bodoni-moda": "^5.3.0",
-    "@fontsource/hanken-grotesk": "^5.3.0",
-    "@tailwindcss/vite": "^4.3.3",
+    "@fontsource-variable/manrope": "^5.3.0",
+    "@fontsource/cormorant-garamond": "^5.3.0",
     "astro": "^7.4.2",
     "sharp": "^0.35.5",
-    "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3"
   }
 }

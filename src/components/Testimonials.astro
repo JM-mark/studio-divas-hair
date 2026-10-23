@@ -3,31 +3,32 @@ import Icon from './Icon.astro';
 import { business, testimonials } from '../data/site';
 const ratingText = business.rating.value.toFixed(1).replace('.', ',');
 ---
-<section id="avaliacoes" class="section">
-  <div class="container-x">
-    <div class="reveal flex flex-col justify-between gap-6 md:flex-row md:items-end">
-      <h2 class="h2 max-w-xl">Quem vem, volta — e recomenda</h2>
-      <p class="flex items-center gap-4">
-        <span class="font-display text-6xl leading-none text-plum-800">{ratingText}</span>
-        <span class="flex flex-col leading-snug">
-          <span class="flex text-plum-800" aria-hidden="true">{[0,1,2,3,4].map(() => <Icon name="star" class="h-5 w-5" />)}</span>
-          <span class="font-semibold">{business.rating.count} avaliações no Google</span>
-        </span>
-      </p>
+<section id="avaliacoes" class="reviews">
+  <div class="wrap">
+    <div class="head head--center reveal">
+      <span class="eyebrow">Depoimentos</span>
+      <h2 class="section-title">Quem vem, <em>volta e recomenda</em></h2>
+      <p class="section-lead">Avaliações de clientes no Google. Nota {ratingText} em {business.rating.count} avaliações.</p>
     </div>
-    <ul class="mt-12 grid gap-12 lg:grid-cols-3 lg:gap-10">
-      {testimonials.map((t, i) => (
-        <li class="reveal flex flex-col" style={`--d:${i * 90}ms`}>
-          <span class="flex text-plum-800" role="img" aria-label="5 de 5 estrelas">{[0,1,2,3,4].map(() => <Icon name="star" class="h-5 w-5" />)}</span>
-          <blockquote class="mt-4 flex-1 font-display text-[1.45rem] leading-snug text-ink-900">“{t.quote}”</blockquote>
-          <p class="mt-5 font-semibold text-plum-800">{t.author}</p>
-          <p class="text-sm text-wood-700">Avaliação no Google · {t.when}</p>
-          {t.reply && <p class="mt-4 bg-sand-100 p-4 text-[0.95rem] text-wood-700"><strong class="text-plum-800">Resposta do estúdio:</strong> {t.reply}</p>}
-        </li>
+  </div>
+  <div class="wrap">
+    <div class="track" id="track" tabindex="0" aria-label="Depoimentos de clientes">
+      {testimonials.map((t) => (
+        <figure class="quote">
+          <span class="stars" role="img" aria-label="5 de 5 estrelas">{[0, 1, 2, 3, 4].map(() => <Icon name="star" />)}</span>
+          <blockquote>{t.quote}</blockquote>
+          <figcaption class="quote__by"><span class="quote__av" aria-hidden="true">{t.author[0]}</span><div><b>{t.author}</b><small>Avaliação no Google · {t.when}</small></div></figcaption>
+          {t.reply && <p class="quote__reply"><strong>Resposta do estúdio:</strong> {t.reply}</p>}
+        </figure>
       ))}
-    </ul>
-    <p class="reveal mt-14">
-      <a href={business.mapsUrl} target="_blank" rel="noopener" class="btn btn-ink">Ver avaliações no Google</a>
-    </p>
+    </div>
+    <div class="ctrl" id="ctrl">
+      <div class="dots" id="dots" aria-hidden="true"></div>
+      <div class="arrows">
+        <button class="arrow" id="prev" type="button" aria-label="Depoimento anterior"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button>
+        <button class="arrow" id="next" type="button" aria-label="Próximo depoimento"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </div>
+    </div>
+    <p class="reviews__more reveal"><a class="btn btn--line" href={business.mapsUrl} target="_blank" rel="noopener">Ver as {business.rating.count} avaliações no Google</a></p>
   </div>
 </section>

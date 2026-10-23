@@ -1,0 +1,15 @@
+---
+import Icon from './Icon.astro';
+import { business, fullAddress, whatsappLink } from '../data/site';
+---
+<section class="cta" id="agendar">
+  <div class="wrap">
+    <h2 class="section-title reveal">Seu momento de cuidado <em>começa aqui</em></h2>
+    <p class="lead reveal" style="--d:.1s">Chame no WhatsApp e agende o seu horário. Atendimento personalizado, no Centro de Indaiatuba.</p>
+    <div class="cta__btns reveal" style="--d:.2s">
+      <a class="btn btn--gold" href={whatsappLink()} target="_blank" rel="noopener"><Icon name="whatsapp" />Agendar pelo WhatsApp</a>
+      <a class="btn btn--ghost" href={`tel:${business.phoneE164}`}>Ligar {business.phoneDisplay}</a>
+    </div>
+    <p class="cta__addr reveal" style="--d:.3s"><b>{business.name}</b><br>{fullAddress}</p>
+  </div>
+</section>

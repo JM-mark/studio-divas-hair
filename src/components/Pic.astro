@@ -1,0 +1,32 @@
+---
+// <picture> for a processed image set in public/media (see scripts/process-media.mjs): AVIF + WebP, responsive widths.
+import { withBase } from '../lib/url';
+interface Props {
+  name: string;                 // e.g. 'conversa'
+  kind: 'chapter' | 'card';     // chapter: desktop (d) + mobile (m) crops; card: single crop (c)
+  alt: string;
+  sizes?: string;
+  eager?: boolean;
+  class?: string;
+}
+const { name, kind, alt, sizes = '100vw', eager = false, class: cls } = Astro.props;
+const set = (n: string, ws: number[], ext: string) => ws.map((w) => `${withBase(`media/${name}-${n}-${w}.${ext}`)} ${w}w`).join(', ');
+const dims = kind === 'chapter' ? { w: 900, h: 1600, fallback: `media/${name}-m-900.webp` } : { w: 900, h: 1125, fallback: `media/${name}-c-900.webp` };
+if (name === 'sobre') { dims.h = 1200; }
+---
+<picture class={cls}>
+  {kind === 'chapter' ? (
+    <>
+      <source media="(min-width:900px)" type="image/avif" srcset={set('d', [1280, 2000], 'avif')} sizes={sizes} />
+      <source media="(min-width:900px)" type="image/webp" srcset={set('d', [1280, 2000], 'webp')} sizes={sizes} />
+      <source type="image/avif" srcset={set('m', [640, 900], 'avif')} sizes={sizes} />
+      <source type="image/webp" srcset={set('m', [640, 900], 'webp')} sizes={sizes} />
+    </>
+  ) : (
+    <>
+      <source type="image/avif" srcset={set('c', [600, 900], 'avif')} sizes={sizes} />
+      <source type="image/webp" srcset={set('c', [600, 900], 'webp')} sizes={sizes} />
+    </>
+  )}
+  <img src={withBase(dims.fallback)} alt={alt} width={dims.w} height={dims.h} loading={eager ? 'eager' : 'lazy'} decoding="async" fetchpriority={eager ? 'high' : undefined} />
+</picture>

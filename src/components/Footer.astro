@@ -2,34 +2,36 @@
 import Icon from './Icon.astro';
 import Logo from './Logo.astro';
 import { withBase } from '../lib/url';
-import { business, fullAddress, hours, mapsDirectionsUrl, whatsappLink } from '../data/site';
+import { business, fullAddress, hours, mapsDirectionsUrl } from '../data/site';
 const year = new Date().getFullYear();
 ---
-<footer class="on-dark bg-ink-900 pb-24 pt-16 text-cream-100 md:pb-14">
-  <div class="container-x grid gap-12 md:grid-cols-3">
-    <div>
-      <Logo file="logo-stacked-reversed.svg" height={120} class="h-[120px] w-auto" />
-      <a href={whatsappLink()} target="_blank" rel="noopener" class="btn btn-rose mt-6"><Icon name="whatsapp" /> Agendar</a>
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <a href={withBase('')} class="logo" aria-label="Studio Diva's Hair – início"><Logo alt="" height={64} /></a>
+        <p style="margin-top:18px;max-width:320px">Salão de beleza unissex no Centro de Indaiatuba, com atendimento personalizado em cada visita.</p>
+      </div>
+      <div>
+        <h2>Contato</h2>
+        <address>
+          <p>{fullAddress}</p>
+          <p><a class="tel" href={`tel:${business.phoneE164}`}>{business.phoneDisplay}</a> · <a class="tel" href={`tel:${business.phoneSecondaryE164}`}>{business.phoneSecondaryDisplay}</a></p>
+          <p><a href={mapsDirectionsUrl} target="_blank" rel="noopener" style="text-decoration:underline;text-underline-offset:3px">Como chegar</a></p>
+        </address>
+        <div class="social" style="margin-top:12px"><a href={business.instagramUrl} target="_blank" rel="noopener"><Icon name="instagram" />{business.instagramHandle}</a></div>
+      </div>
+      <div>
+        <h2>Horários</h2>
+        <ul class="footer__hours">
+          {hours.filter((h) => h.open).map((h) => <li>{h.label}: {h.open}–{h.close}</li>)}
+          <li>Segunda e domingo: fechado</li>
+        </ul>
+      </div>
     </div>
-    <div>
-      <h2 class="font-display text-2xl text-cream-100">Contato</h2>
-      <address class="mt-4 space-y-2 not-italic text-sand-300">
-        <p>{fullAddress}</p>
-        <p><a href={`tel:${business.phoneE164}`} class="link text-cream-100">{business.phoneDisplay}</a> · <a href={`tel:${business.phoneSecondaryE164}`} class="link text-cream-100">{business.phoneSecondaryDisplay}</a></p>
-        <p><a href={mapsDirectionsUrl} target="_blank" rel="noopener" class="link text-cream-100">Como chegar</a></p>
-        <p><a href={business.instagramUrl} target="_blank" rel="noopener" class="link inline-flex items-center gap-2 text-cream-100"><Icon name="instagram" class="h-5 w-5" />{business.instagramHandle}</a></p>
-      </address>
+    <div class="footer__copy">
+      <p>© {year} {business.legalTitle}. Todos os direitos reservados.</p>
+      <p><a href={withBase('creditos/')}>Créditos das imagens</a></p>
     </div>
-    <div>
-      <h2 class="font-display text-2xl text-cream-100">Horários</h2>
-      <ul class="mt-4 space-y-1 text-sand-300">
-        {hours.filter((h) => h.open).map((h) => <li>{h.label}: {h.open}–{h.close}</li>)}
-        <li>Segunda e domingo: fechado</li>
-      </ul>
-    </div>
-  </div>
-  <div class="container-x mt-14 flex flex-col gap-2 text-sm text-sand-300 sm:flex-row sm:justify-between">
-    <p>© {year} {business.legalTitle}. Todos os direitos reservados.</p>
-    <p><a href={withBase('creditos/')} class="link text-sand-300">Créditos das imagens</a></p>
   </div>
 </footer>

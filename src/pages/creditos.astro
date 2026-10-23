@@ -2,25 +2,48 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { publishedCredits } from '../data/image-credits';
+import { photoCredits, videoCredit } from '../data/image-credits';
 ---
-<Layout title="Créditos das imagens | Studio Diva's Hair" description="Origem das imagens usadas no site do Studio Diva's Hair." noindex>
-  <Header />
-  <main id="conteudo" class="container-x section">
-    <h1 class="t-h1 text-plum-800">Créditos das imagens</h1>
-    <p class="mt-5 max-w-2xl text-lg text-wood-700">O logo, os ícones e as ilustrações da marca foram criados para o Studio Diva's Hair. {publishedCredits.length === 0 ? 'Por enquanto o site não usa fotos de terceiros nem de bancos de imagens.' : 'Fotos usadas no site:'}</p>
-    {publishedCredits.length > 0 && (
-      <div class="mt-10 overflow-x-auto">
-        <table class="w-full min-w-[32rem] text-left">
-          <thead><tr class="bg-sand-100"><th class="px-3 py-3">Imagem</th><th class="px-3 py-3">Origem</th><th class="px-3 py-3">Uso no site</th></tr></thead>
+<Layout title="Créditos das imagens | Studio Diva's Hair" description="Origem e licença das imagens e do vídeo usados no site do Studio Diva's Hair." noindex>
+  <Header solid />
+  <main id="conteudo" class="page">
+    <div class="wrap">
+      <h1>Créditos das <em>imagens</em></h1>
+      <p class="lead">O logo, os ícones e as artes da marca foram criados para o Studio Diva's Hair. As fotos e o vídeo do site são imagens de banco, usadas sob a <a href="https://www.pexels.com/license/" target="_blank" rel="noopener" style="text-decoration:underline">Licença Pexels</a> (uso comercial permitido, crédito não obrigatório; aqui o crédito é dado por respeito aos autores).</p>
+      <p class="lead">São imagens ilustrativas: não mostram o trabalho do estúdio, a Adriana ou clientes do salão, e as pessoas retratadas não endossam o Studio Diva's Hair. As fotos passaram por um ajuste de cor para combinar com o site.</p>
+
+      <h2>Fotos</h2>
+      <div class="table-scroll">
+        <table class="credits">
+          <thead><tr><th>Foto</th><th>Autor(a)</th><th>Página de origem</th><th>Uso no site</th></tr></thead>
           <tbody>
-            {publishedCredits.map((c) => (
-              <tr><td class="px-3 py-3">{c.file}</td><td class="px-3 py-3"><a class="link" href={c.url} target="_blank" rel="noopener">{c.source}</a></td><td class="px-3 py-3">{c.usedIn}</td></tr>
+            {photoCredits.map((c) => (
+              <tr>
+                <td>{c.title}</td>
+                <td><a href={c.photographerUrl} target="_blank" rel="noopener">{c.photographer}</a></td>
+                <td><a href={c.pageUrl} target="_blank" rel="noopener">Pexels #{c.id}</a></td>
+                <td>{c.usedIn}</td>
+              </tr>
             ))}
           </tbody>
         </table>
       </div>
-    )}
+
+      <h2>Vídeo</h2>
+      <div class="table-scroll">
+        <table class="credits">
+          <thead><tr><th>Vídeo</th><th>Autor(a)</th><th>Página de origem</th><th>Uso no site</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>{videoCredit.title}</td>
+              <td><a href={videoCredit.creatorUrl} target="_blank" rel="noopener">{videoCredit.creator}</a></td>
+              <td><a href={videoCredit.pageUrl} target="_blank" rel="noopener">Pexels #{videoCredit.id}</a></td>
+              <td>{videoCredit.usedIn}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </main>
   <Footer />
 </Layout>

@@ -2,29 +2,36 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
+import Journey from '../components/Journey.astro';
 import Services from '../components/Services.astro';
 import About from '../components/About.astro';
-import Gallery from '../components/Gallery.astro';
-import Instagram from '../components/Instagram.astro';
+import Numbers from '../components/Numbers.astro';
 import Testimonials from '../components/Testimonials.astro';
 import HoursLocation from '../components/HoursLocation.astro';
+import Cta from '../components/Cta.astro';
 import Footer from '../components/Footer.astro';
-import { features } from '../data/site';
 import WhatsAppFloat from '../components/WhatsAppFloat.astro';
+import { withBase } from '../lib/url';
 ---
 <Layout
   title="Studio Diva's Hair | Salão de Beleza no Centro de Indaiatuba"
   description="Salão de beleza unissex em Indaiatuba com nota 5,0 no Google: corte, escova, progressiva, hidratação, matização, manicure e estética no Centro. Agende pelo WhatsApp."
 >
+  <Fragment slot="head">
+    <!-- LCP: the hero poster, in the right size for each screen -->
+    <link rel="preload" as="image" type="image/avif" media="(max-width:899px)" href={withBase('media/hero-poster-m.avif')} fetchpriority="high" />
+    <link rel="preload" as="image" type="image/avif" media="(min-width:900px)" href={withBase('media/hero-poster-d.avif')} fetchpriority="high" />
+  </Fragment>
   <Header />
   <main id="conteudo">
     <Hero />
+    <Journey />
     <Services />
     <About />
-    {features.showClientPhotos && <Gallery />}
-    <Instagram />
+    <Numbers />
     <Testimonials />
     <HoursLocation />
+    <Cta />
   </main>
   <Footer />
   <WhatsAppFloat />

@@ -1,31 +1,32 @@
 ---
-import { Image } from 'astro:assets';
-import Icon from './Icon.astro';
-import Logo from './Logo.astro';
-import { about, business, features, whatsappLink } from '../data/site';
-// Client photo (git-ignored until permission): lazy glob so nothing is bundled when the flag is off.
-const files = import.meta.glob<{ default: ImageMetadata }>('../assets/images/fachada.jpg');
-const img = features.showClientPhotos ? (await files['../assets/images/fachada.jpg']()).default : null;
+import Pic from './Pic.astro';
+import { about, aboutPoints } from '../data/site';
+import { photoCredits } from '../data/image-credits';
+const alt = photoCredits.find((c) => c.key === 'sobre')!.alt;
 ---
-<section id="sobre" class="on-dark bg-plum-800 text-cream-100">
-  <div class="grid items-stretch lg:grid-cols-2">
-    <div class="reveal relative min-h-[18rem] lg:min-h-[36rem]">
-      {img ? (
-        <Image src={img} alt={`Fachada do ${business.name} na ${business.address.street}, com adesivos em preto e branco e o letreiro do salão`}
-               widths={[480, 653]} sizes="(min-width: 1024px) 50vw, 100vw" loading="lazy" class="absolute inset-0 h-full w-full object-cover" />
-      ) : (
-        <div class="absolute inset-0 grid place-items-center bg-ink-900" aria-hidden="true">
-          <Logo file="logo-symbol-reversed.svg" alt="" height={220} class="h-auto w-48 sm:w-56" />
+<section id="sobre" class="about">
+  <div class="wrap">
+    <div class="about__grid">
+      <div class="reveal">
+        <div class="about__media">
+          <span class="about__frame" aria-hidden="true"></span>
+          <Pic name="sobre" kind="card" alt={alt} sizes="(min-width:900px) 40vw, 90vw" />
+          <div class="about__tag"><b>Centro</b>Indaiatuba · SP</div>
         </div>
-      )}
-    </div>
-    <div class="reveal container-x flex flex-col justify-center py-16 lg:ml-0 lg:mr-auto lg:w-full lg:max-w-[38rem] lg:py-24 lg:pl-14 lg:pr-8">
-      <h2 class="h2">{about.title}</h2>
-      <div class="mt-6 space-y-4 text-[1.1rem] text-cream-100">
-        {about.paragraphs.map((p) => <p>{p}</p>)}
+        <p class="about__note">Imagem ilustrativa de um salão de beleza.</p>
       </div>
-      <p class="mt-5 text-sand-300">Adriana (Dri), à frente do estúdio.</p>
-      <a href={whatsappLink()} target="_blank" rel="noopener" class="btn btn-rose mt-8 self-start"><Icon name="whatsapp" /> Falar com a Dri</a>
+      <div class="about__text">
+        <div class="head reveal" style="margin-bottom:0">
+          <span class="eyebrow">Sobre o studio</span>
+          <h2 class="section-title">{about.title[0]}<em>{about.title[1]}</em></h2>
+        </div>
+        {about.paragraphs.map((p) => <p class="reveal">{p}</p>)}
+        <div class="diffs">
+          {aboutPoints.map((d, i) => (
+            <div class="diff reveal" style={`--d:${0.05 * (i + 1)}s`}><i></i><div><strong>{d.title}</strong><span>{d.text}</span></div></div>
+          ))}
+        </div>
+      </div>
     </div>
   </div>
 </section>

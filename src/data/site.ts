@@ -104,7 +104,7 @@ export const serviceGroups: ServiceGroup[] = [
 
 export const about = {
   // TODO(owner): review/replace this text. It is generic and based only on public review themes.
-  title: 'Do primeiro oi ao último detalhe',
+  title: ['Do primeiro oi ao ', 'último detalhe'],
   paragraphs: [
     "No Studio Diva's Hair, um salão unissex no Centro de Indaiatuba, cada atendimento é pensado para você. A Adriana, a Dri, recebe cada cliente com carinho e atenção, escuta o que você deseja e orienta com sinceridade sobre o melhor caminho para os seus fios.",
     'O objetivo é simples: que você saia daqui se sentindo bem, bonita e pronta para qualquer ocasião — e com dicas práticas para cuidar do cabelo em casa.',
@@ -122,29 +122,40 @@ export const testimonials: Testimonial[] = [
   { quote: 'Quero agradecer pelo carinho e capricho. Minhas unhas ficaram perfeitas e o atendimento foi excelente. Com certeza virei cliente!', author: 'Thaiane M.', when: 'há 10 meses', reply: 'Um enorme prazer em atendê-la.. Obrigada pelo carinho e confiança.' },
 ];
 
-/**
- * Feature flags. showClientPhotos stays OFF until the owner sends her own photos (and permission for any client photos).
- * It controls EVERY client-uploaded photo: hero, "Sobre" facade, gallery and the Instagram photo grid. While off, the
- * site shows brand-coloured panels instead, and the photo files are git-ignored (see .gitignore).
- */
-export const features = { showClientPhotos: false };
-
-const allNav = [
+export const navLinks = [
   { href: '#servicos', label: 'Serviços' },
   { href: '#sobre', label: 'Sobre' },
-  { href: '#galeria', label: 'Galeria' },
   { href: '#avaliacoes', label: 'Avaliações' },
   { href: '#contato', label: 'Contato' },
 ];
-export const navLinks = allNav.filter((l) => features.showClientPhotos || l.href !== '#galeria');
 
-/**
- * Gallery photos (files in src/assets/images/). TODO(owner): replace with your own photos of your work;
- * these four come from public Google Maps photos and need the photographers' permission before launch.
- */
-export const gallery = [
-  { file: 'galeria-cachos.jpg', alt: 'Cabelo longo com cachos definidos e mechas douradas, visto de costas' },
-  { file: 'galeria-azul-ondas.jpg', alt: 'Cabelo com coloração azul em tons de petróleo e pontas onduladas' },
-  { file: 'galeria-azul-liso.jpg', alt: 'Cabelo liso com mechas azul-elétrico' },
-  { file: 'galeria-unhas-pretas.jpg', alt: 'Mão com unhas curtas pretas decoradas com detalhes' },
+export const serviceCount = serviceGroups.reduce((n, g) => n + g.items.length, 0);
+
+/** Hero proof card: a short excerpt copied as written from a real Google review (first name + initial). */
+export const heroReview = { quote: 'A Adri além de ser uma ótima profissional, também é uma pessoa incrível, simpática', author: 'Viviane Q.' };
+
+/** The four pinned chapters. `key` = image set in public/media (see src/data/image-credits.ts). title = [plain, italic accent]. */
+export const chapters = [
+  { n: '01', label: 'A Conversa', key: 'conversa', title: ['Tudo começa ', 'ouvindo você'],
+    text: 'Escutamos o que você deseja, entendemos a rotina dos seus fios e explicamos cada passo antes de começar.' },
+  { n: '02', label: 'O Diagnóstico', key: 'diagnostico', title: ['Cada fio ', 'tem uma história'],
+    text: 'Olhamos com calma o seu cabelo para indicar só o que faz sentido para você, com sinceridade.' },
+  { n: '03', label: 'O Cuidado', key: 'cuidado', title: ['Capricho em ', 'cada detalhe'],
+    text: 'Cada etapa feita com atenção, do começo ao fim do atendimento.' },
+  { n: '04', label: 'O Resultado', key: 'resultado', title: ['Liso, leve e ', 'cheio de brilho'],
+    text: 'Fios alinhados, macios e com brilho. E dicas práticas para manter o cuidado em casa.' },
+] as const;
+
+/** The three service cards (one per serviceGroups entry, same ids). */
+export const serviceCards = [
+  { id: 'cabelo', key: 'cabelo', title: ['Cabelo', ''], line: 'Corte, escova, progressiva, hidratação e mais, para mulheres e homens.', ask: 'cabelo' },
+  { id: 'unhas', key: 'unhas', title: ['Unhas', ''], line: 'Mãos e pés bem cuidados, com acabamento natural e durável.', ask: 'unhas' },
+  { id: 'estetica', key: 'estetica', title: ['Estética e ', 'bem-estar'], line: 'Maquiagem, sobrancelhas, depilação e momentos para relaxar.', ask: 'estética e bem-estar' },
+] as const;
+
+export const aboutPoints = [
+  { title: 'Atendimento personalizado', text: 'Cada pessoa é única: escutamos antes de indicar o melhor caminho.' },
+  { title: 'Orientação sincera', text: 'Dicas práticas para cuidar do cabelo em casa.' },
+  { title: 'Para mulheres e homens', text: 'Salão unissex, com cabelo, unhas e estética no mesmo lugar.' },
+  { title: 'Cabelos étnicos', text: 'Atendimento atento à natureza de cada fio.' },
 ] as const;

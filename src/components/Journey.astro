@@ -1,0 +1,22 @@
+---
+import Pic from './Pic.astro';
+import { chapters } from '../data/site';
+import { photoCredits } from '../data/image-credits';
+const alt = (key: string) => photoCredits.find((c) => c.key === key)!.alt;
+---
+<section class="journey" id="jornada" aria-label="A jornada do seu atendimento">
+  <div class="stage" id="stage">
+    {chapters.map((c, i) => (
+      <article class="chapter" aria-labelledby={`ch${i + 1}`}>
+        <Pic name={c.key} kind="chapter" alt={alt(c.key)} class="chapter__bg" />
+        <p class="chapter__label"><span>{c.n}</span> — {c.label}</p>
+        <div class="chapter__content">
+          <h2 class="chapter__title reveal" id={`ch${i + 1}`}>{c.title[0]}<em>{c.title[1]}</em></h2>
+          <p class="chapter__text reveal" style="--d:.12s">{c.text}</p>
+        </div>
+        {i < chapters.length - 1 && <p class="chapter__hint" aria-hidden="true">Role para continuar<i></i></p>}
+      </article>
+    ))}
+    <div class="journey__dots" aria-hidden="true">{chapters.map((_, i) => <b class={i === 0 ? 'on' : ''}></b>)}</div>
+  </div>
+</section>

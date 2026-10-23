@@ -1,6 +1,6 @@
 # Studio Diva's Hair — site
 
-Static marketing site (Astro + Tailwind CSS v4 + TypeScript) for **Studio Diva's Hair – Salão de Beleza**, Indaiatuba/SP. Content is pt-BR; the main conversion is booking via WhatsApp. Hosted free on **GitHub Pages**: https://jm-mark.github.io/studio-divas-hair/
+Static marketing site (Astro + plain CSS + TypeScript; GSAP/ScrollTrigger from cdnjs for the pinned chapters) for **Studio Diva's Hair – Salão de Beleza**, Indaiatuba/SP. Content is pt-BR; the main conversion is booking via WhatsApp. Hosted free on **GitHub Pages**: https://jm-mark.github.io/studio-divas-hair/
 
 ## Run locally
 
@@ -13,16 +13,16 @@ npm run preview    # serve dist/ locally
 node scripts/verify-live.mjs   # crawl the live site: every page and asset must be 200
 ```
 
-Node version: see `.nvmrc` (24).
+Node version: see `.nvmrc` (24; Astro 7 needs >= 22.23.4).
 
 ## Edit content
 
-Almost everything lives in **`src/data/site.ts`**: contact, hours, services (and optional prices), the "Sobre" text, reviews, and the `features.showClientPhotos` flag.
+Almost everything lives in **`src/data/site.ts`**: contact, hours, services (and optional prices), the four chapters, the service cards, the "Sobre" text and reviews.
 
 - **Address and base path:** one place, `src/data/site-url.mjs` (`SITE_ORIGIN` + `BASE_PATH`). Canonical URLs, Open Graph, JSON-LD, sitemap and `robots.txt` all follow it. Internal links and assets use `withBase()` from `src/lib/url.ts`, so they respect the base path (never hard-code a leading `/`).
-- **Photos:** none of the client-uploaded photos are published or committed (`hero-interior.jpg`, `fachada.jpg`, `galeria-*.jpg` are git-ignored). While `features.showClientPhotos` is `false` the hero, "Sobre" panel and the gallery use brand-coloured panels, and the gallery and Instagram grid are hidden. When the owner sends her own photos: put them in `src/assets/images/` with those names (or edit `gallery` in `site.ts`), remove their lines from `.gitignore`, set the flag to `true`, update `src/data/image-credits.ts`, and push.
+- **Images and hero video:** illustrative stock under the Pexels License (commercial use allowed), listed with photographer, page and licence in `src/data/image-credits.ts` and rendered on `/creditos`. `node scripts/process-media.mjs` re-downloads the originals from the public Pexels CDN (no keys) and rebuilds `public/media` (one warm grade, AVIF + WebP, responsive widths, hero video loop + posters); `node scripts/make-og.mjs` rebuilds the social image. Stock is never presented as the salon's work, Adriana or a client. **Client-uploaded photos are never committed** (`hero-interior.jpg`, `fachada.jpg`, `galeria-*.jpg` stay git-ignored, rights pending). When the owner sends her own photos, replace the matching entries in `image-credits.ts` and re-run the script.
 - **Reviews:** real public Google reviews with shortened names (`// TODO(owner): confirm permission`).
-- **Brand:** tokens in `src/styles/brand-theme.css` (generated from `../brand/tokens.json`); logos in `public/logo/`.
+- **Brand:** logos in `public/logo/` (the reversed version is used over dark and photos).
 - **`/marca`** (brand guidelines, `noindex`): `MSYS_NO_PATHCONV=1 node ../brand/guidelines-build.mjs --site public/marca --back /studio-divas-hair/`.
 
 ## Deploy (GitHub Pages)
@@ -42,4 +42,4 @@ Add the HTML-tag verification meta in `src/layouts/Layout.astro` (`<meta name="g
 
 ## Not committed
 
-`.env` (API keys), `node_modules`, `dist`, the raw `brand-source/` files and the client photos listed above. `scripts/fetch-stock.ts` (Pexels/Pixabay) needs keys in `.env`; see `.env.example`.
+`node_modules`, `dist`, `.media-cache/` (downloaded originals), the raw `brand-source/` files and the client photos listed above.

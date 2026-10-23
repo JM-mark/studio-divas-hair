@@ -3,42 +3,25 @@ import Icon from './Icon.astro';
 import Logo from './Logo.astro';
 import { navLinks, whatsappLink } from '../data/site';
 import { withBase } from '../lib/url';
+interface Props { solid?: boolean }
+const { solid = false } = Astro.props;
 const home = withBase('');
 ---
-<header class="sticky top-0 z-50 bg-cream-100/95 backdrop-blur-sm">
-  <div class="container-x flex h-[4.25rem] items-center justify-between gap-3">
-    <a href={home} class="block" aria-label="Studio Diva's Hair – início"><Logo alt="" height={38} class="h-[34px] w-auto sm:h-[38px]" /></a>
-
-    <nav aria-label="Principal" class="hidden items-center gap-8 font-medium text-ink-900 lg:flex">
-      {navLinks.map((l) => <a href={home + l.href} class="py-2 hover:text-plum-800">{l.label}</a>)}
+<header class:list={['header', { 'header--solid': solid }]} id="header">
+  <div class="wrap">
+    <a href={home} class="logo" aria-label="Studio Diva's Hair – início"><Logo alt="" height={46} /></a>
+    <nav class="nav" aria-label="Principal">
+      {navLinks.map((l) => <a href={home + l.href}>{l.label}</a>)}
     </nav>
-
-    <div class="flex items-center gap-1">
-      <a href={whatsappLink()} target="_blank" rel="noopener" class="btn btn-rose !min-h-11 !px-4 text-[0.95rem] sm:!px-5">
-        <Icon name="whatsapp" class="h-4 w-4" />
-        <span class="sm:hidden">Agendar</span><span class="hidden sm:inline">Agendar pelo WhatsApp</span>
+    <div class="header__cta">
+      <a class="btn btn--gold btn--sm" href={whatsappLink()} target="_blank" rel="noopener">
+        <Icon name="whatsapp" /><span class="long">Agendar pelo WhatsApp</span><span class="short">Agendar</span>
       </a>
-      <button id="menu-btn" type="button" class="grid h-11 w-11 place-items-center text-plum-800 lg:hidden" aria-expanded="false" aria-controls="mobile-nav" aria-label="Abrir menu">
-        <Icon name="menu" class="h-6 w-6" />
-      </button>
+      <button class="burger" id="burger" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="drawer"><span></span></button>
     </div>
   </div>
-  <nav id="mobile-nav" aria-label="Principal (celular)" hidden class="bg-cream-100 lg:hidden">
-    <ul class="container-x flex flex-col pb-3">
-      {navLinks.map((l) => <li><a href={home + l.href} class="block py-3 font-display text-2xl text-plum-800">{l.label}</a></li>)}
-    </ul>
-  </nav>
 </header>
-
-<script>
-  const btn = document.getElementById('menu-btn')!;
-  const nav = document.getElementById('mobile-nav')!;
-  const set = (open: boolean) => {
-    nav.hidden = !open;
-    btn.setAttribute('aria-expanded', String(open));
-    btn.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
-  };
-  btn.addEventListener('click', () => set(nav.hidden));
-  nav.addEventListener('click', (e) => { if ((e.target as HTMLElement).closest('a')) set(false); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !nav.hidden) { set(false); btn.focus(); } });
-</script>
+<div class="drawer" id="drawer" aria-hidden="true">
+  {navLinks.map((l) => <a class="dl" href={home + l.href}>{l.label}</a>)}
+  <a class="btn btn--gold" href={whatsappLink()} target="_blank" rel="noopener"><Icon name="whatsapp" />Agendar pelo WhatsApp</a>
+</div>

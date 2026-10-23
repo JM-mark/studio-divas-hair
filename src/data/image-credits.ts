@@ -1,13 +1,54 @@
 /**
- * Image credits. Only images that are actually PUBLISHED belong in `publishedCredits`.
- * No stock photos (Pexels/Pixabay) are used yet; see scripts/fetch-stock.ts and .env.example.
+ * Image and video credits. Every file in public/media comes from here (scripts/process-media.mjs reads this list).
+ * All items are published under the Pexels License (https://www.pexels.com/license/): free for commercial use, no
+ * attribution required, edits allowed; people shown must not be presented as endorsing the business.
+ * They are illustrative stock images: they are NEVER presented as the salon's work, as Adriana or as a client.
  */
-export interface ImageCredit { file: string; source: string; url: string; usedIn: string }
+export interface PhotoCredit {
+  /** key used by scripts/process-media.mjs and the components (public/media/{key}-…) */
+  key: string;
+  /** Pexels photo id (the original is fetched from the public image CDN) */
+  id: number;
+  title: string;
+  photographer: string;
+  photographerUrl: string;
+  pageUrl: string;
+  usedIn: string;
+  alt: string;
+}
 
-/** Currently published photos: none. The logo, icons and templates were created for the salon. */
-export const publishedCredits: ImageCredit[] = [];
+const photo = (p: Omit<PhotoCredit, 'photographerUrl' | 'pageUrl'> & { handle: string; slug: string }): PhotoCredit => ({
+  key: p.key, id: p.id, title: p.title, photographer: p.photographer, usedIn: p.usedIn, alt: p.alt,
+  photographerUrl: `https://www.pexels.com/@${p.handle}/`,
+  pageUrl: `https://www.pexels.com/photo/${p.slug}-${p.id}/`,
+});
 
-/** Held back until the owner supplies her own photos or the uploaders give permission (internal note, never rendered). */
-export const heldBack = [
-  'hero-interior.jpg', 'fachada.jpg', 'galeria-cachos.jpg', 'galeria-azul-ondas.jpg', 'galeria-azul-liso.jpg', 'galeria-unhas-pretas.jpg',
+export const photoCredits: PhotoCredit[] = [
+  photo({ key: 'conversa', id: 3992863, title: 'Getting a Haircut', photographer: 'cottonbro studio', handle: 'cottonbro', slug: 'getting-a-haircut',
+    usedIn: 'Capítulo 01 · A Conversa', alt: 'Cabeleireira conversando com uma cliente diante do espelho do salão' }),
+  photo({ key: 'diagnostico', id: 23349912, title: 'A Hairdresser Combing Clients Hair', photographer: 'Oleskandra Biliak', handle: 'oleksandra', slug: 'a-hairdresser-combing-clients-hair',
+    usedIn: 'Capítulo 02 · O Diagnóstico', alt: 'Mãos de cabeleireira examinando e penteando mechas longas e lisas' }),
+  photo({ key: 'cuidado', id: 14615061, title: 'Hairdresser Making Woman Hairstyle', photographer: 'Daniil Kondrashin', handle: 'konrads-photo', slug: 'hairdresser-making-woman-hairstyle',
+    usedIn: 'Capítulo 03 · O Cuidado', alt: 'Escova e secador alinhando fios longos em um salão de luz quente' }),
+  photo({ key: 'resultado', id: 19461452, title: 'Portrait of a Young Woman', photographer: 'Kenneth Surillo', handle: 'kenzero14', slug: 'portrait-of-a-young-woman',
+    usedIn: 'Capítulo 04 · O Resultado', alt: 'Mulher de perfil com cabelo preto, liso e brilhante sob luz suave' }),
+  photo({ key: 'cabelo', id: 2325807, title: 'Portrait of Woman Looking side', photographer: 'fall maple', handle: 'fall-maple-1195057', slug: 'portrait-of-woman-looking-side',
+    usedIn: 'Serviços · Cabelo', alt: 'Mulher de perfil com cabelo longo, castanho e liso' }),
+  photo({ key: 'unhas', id: 4677845, title: 'A Person Getting a Nail Polish', photographer: 'Leeloo The First', handle: 'leeloothefirst', slug: 'a-person-getting-a-nail-polish',
+    usedIn: 'Serviços · Unhas', alt: 'Manicure aplicando esmalte escuro nas unhas de uma cliente' }),
+  photo({ key: 'estetica', id: 37710473, title: 'Bride Getting Ready with Makeup Artist', photographer: 'Alexander Mass', handle: 'rebornfilmes', slug: 'bride-getting-ready-with-makeup-artist',
+    usedIn: 'Serviços · Estética e bem-estar', alt: 'Maquiadora preparando uma mulher de roupão, com luz natural' }),
+  photo({ key: 'sobre', id: 7195806, title: 'Beauty salon with reception desk', photographer: 'Max Vakhtbovych', handle: 'artbovich', slug: 'beauty-salon-with-reception-desk',
+    usedIn: "Sobre (imagem ilustrativa de salão; não é o Studio Diva's Hair)", alt: 'Interior elegante de um salão de beleza, com espelhos iluminados e piso de mármore escuro' }),
 ];
+
+export interface VideoCredit { id: number; title: string; creator: string; creatorUrl: string; pageUrl: string; file: string; usedIn: string }
+export const videoCredit: VideoCredit = {
+  id: 36707549,
+  title: 'Blonde Woman Showcasing Silky Long Hair',
+  creator: 'Zenia Diamond',
+  creatorUrl: 'https://www.pexels.com/@zenia-diamond-2147728402/',
+  pageUrl: 'https://www.pexels.com/video/blonde-woman-showcasing-silky-long-hair-36707549/',
+  file: 'https://videos.pexels.com/video-files/36707549/15558864_1080_1920_30fps.mp4',
+  usedIn: 'Vídeo do topo da página (câmera lenta, em loop, com o mesmo tratamento de cor das fotos)',
+};

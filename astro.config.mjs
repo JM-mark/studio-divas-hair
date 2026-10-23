@@ -1,6 +1,5 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
-import tailwindcss from '@tailwindcss/vite';
 import { SITE_ORIGIN, BASE_PATH } from './src/data/site-url.mjs';
 
 // Fully static output for GitHub Pages (project site under a base path). The address lives in src/data/site-url.mjs.
@@ -10,5 +9,4 @@ export default defineConfig({
   output: 'static',
   build: { inlineStylesheets: 'always' },
   integrations: [sitemap({ filter: (page) => !page.includes('/creditos') })],
-  vite: { plugins: [tailwindcss()] },
 });

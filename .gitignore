@@ -11,3 +11,4 @@ lh-*.json
 src/assets/images/galeria-*.jpg
 src/assets/images/hero-interior.jpg
 src/assets/images/fachada.jpg
+.media-cache

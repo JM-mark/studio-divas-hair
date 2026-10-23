@@ -1,0 +1,17 @@
+---
+import { business, serviceCount } from '../data/site';
+const stats = [
+  { to: business.rating.value, dec: 1, label: 'Nota no Google' },
+  { to: business.rating.count, dec: 0, label: 'Avaliações no Google' },
+  { to: serviceCount, dec: 0, label: 'Serviços' },
+];
+const fmt = (v: number, d: number) => v.toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d });
+---
+<section class="numbers" aria-label="Studio Diva's Hair em números">
+  <div class="wrap">
+    <!-- The HTML already holds the final value; the script only replays 0 → value when the section enters the screen. -->
+    <div class="stats reveal">
+      {stats.map((s) => <div class="stat"><div class="stat__n count" data-to={s.to} data-decimals={s.dec}>{fmt(s.to, s.dec)}</div><div class="stat__l">{s.label}</div></div>)}
+    </div>
+  </div>
+</section>

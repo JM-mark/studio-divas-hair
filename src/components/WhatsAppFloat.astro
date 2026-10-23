@@ -1,8 +1,7 @@
 ---
 import Icon from './Icon.astro';
-import { whatsappLink } from '../data/site';
+import { business, whatsappLink } from '../data/site';
 ---
-<a href={whatsappLink()} target="_blank" rel="noopener" aria-label="Agendar pelo WhatsApp"
-   class="fixed bottom-4 right-4 z-50 grid h-14 w-14 place-items-center rounded-full bg-[#0f7b42] text-white ring-4 ring-cream-100 transition-transform active:scale-95 md:hidden">
-  <Icon name="whatsapp" class="h-7 w-7" />
+<a href={whatsappLink()} target="_blank" rel="noopener" class="wa-float" id="waFloat" aria-label={`Falar no WhatsApp: ${business.phoneDisplay}`}>
+  <Icon name="whatsapp" /><span class="long">{business.phoneDisplay}</span><span class="short">WhatsApp</span>
 </a>

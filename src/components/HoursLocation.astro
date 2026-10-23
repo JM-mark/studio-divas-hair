@@ -2,43 +2,42 @@
 import Icon from './Icon.astro';
 import { business, hours, fullAddress, mapsDirectionsUrl, mapsEmbedUrl, whatsappLink } from '../data/site';
 ---
-<section id="contato" class="section bg-sand-100">
-  <div class="container-x">
-    <h2 class="h2 reveal max-w-3xl">Horários e localização no Centro de Indaiatuba</h2>
-
-    <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:gap-14">
-      <div class="reveal">
-        <p id="open-status" class="inline-flex items-center gap-3 bg-cream-100 px-4 py-2 font-semibold text-ink-900" role="status" aria-live="polite">
-          <span id="open-dot" class="h-3 w-3 rounded-full bg-wood-600" aria-hidden="true"></span>
+<section id="contato" class="location">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="eyebrow">Localização</span>
+      <h2 class="section-title">Venha nos <em>visitar</em></h2>
+    </div>
+    <div class="loc__grid">
+      <div class="loc__info reveal">
+        <p id="open-status" class="open-pill" role="status" aria-live="polite">
+          <span id="open-dot" class="dot" aria-hidden="true"></span>
           <span id="open-text">Confira nossos horários</span>
         </p>
-        <table class="mt-6 w-full text-left" id="hours-table" data-hours={JSON.stringify(hours)}>
-          <caption class="sr-only">Horário de funcionamento</caption>
-          <tbody>
-            {hours.map((h) => (
-              <tr data-day={h.day}>
-                <th scope="row" class="px-3 py-3 font-medium">{h.label}<span class="today-tag"></span></th>
-                <td class="px-3 py-3 text-right text-wood-700">{h.open ? `${h.open} – ${h.close}` : 'Fechado'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        <address class="mt-8 not-italic text-ink-900">
-          <p class="flex gap-3"><Icon name="pin" class="mt-1 h-5 w-5 shrink-0 text-plum-800" />{fullAddress}</p>
-          <p class="mt-3 flex gap-3"><Icon name="phone" class="mt-1 h-5 w-5 shrink-0 text-plum-800" />
-            <span><a href={`tel:${business.phoneE164}`} class="link">{business.phoneDisplay}</a> · <a href={`tel:${business.phoneSecondaryE164}`} class="link">{business.phoneSecondaryDisplay}</a></span></p>
-        </address>
-        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-          <a href={whatsappLink()} target="_blank" rel="noopener" class="btn btn-ink"><Icon name="whatsapp" /> Agendar</a>
-          <a href={mapsDirectionsUrl} target="_blank" rel="noopener" class="btn btn-rose"><Icon name="pin" /> Como chegar</a>
-          <a href={`tel:${business.phoneE164}`} class="btn bg-cream-100 text-ink-900 hover:bg-sand-200"><Icon name="phone" /> Ligar</a>
+        <div class="info-row"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.4"/></svg></span>
+          <div><h3>Endereço</h3><address style="font-style:normal"><p>{fullAddress}</p></address></div></div>
+        <div class="info-row"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span>
+          <div><h3>Horário</h3>
+            <table class="hours" id="hours-table" data-hours={JSON.stringify(hours)}>
+              <caption class="sr-only">Horário de funcionamento</caption>
+              <tbody>
+                {hours.map((h) => (
+                  <tr data-day={h.day}>
+                    <th scope="row">{h.label}<span class="today-tag"></span></th>
+                    <td>{h.open ? `${h.open} – ${h.close}` : 'Fechado'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table></div></div>
+        <div class="info-row"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg></span>
+          <div><h3>Telefone / WhatsApp</h3><p><a class="tel" href={`tel:${business.phoneE164}`}>{business.phoneDisplay}</a> · <a class="tel" href={`tel:${business.phoneSecondaryE164}`}>{business.phoneSecondaryDisplay}</a></p></div></div>
+        <div class="loc__btns">
+          <a class="btn btn--wa" href={whatsappLink()} target="_blank" rel="noopener"><Icon name="whatsapp" />Agendar</a>
+          <a class="btn btn--line" href={mapsDirectionsUrl} target="_blank" rel="noopener"><Icon name="pin" />Como chegar</a>
         </div>
       </div>
-
-      <div class="reveal min-h-[24rem] overflow-hidden bg-cream-100" style="--d:100ms">
-        <iframe title={`Mapa: ${business.name}, ${business.address.street}`} src={mapsEmbedUrl} loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-                class="h-full min-h-[24rem] w-full border-0" allowfullscreen></iframe>
+      <div class="map reveal" style="--d:.1s">
+        <iframe title={`Mapa: ${business.name}, ${business.address.street}`} src={mapsEmbedUrl} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
       </div>
     </div>
   </div>
@@ -56,12 +55,11 @@ import { business, hours, fullAddress, mapsDirectionsUrl, mapsEmbedUrl, whatsapp
     // The static HTML has no "today" marker: only the current day (São Paulo time) gets one, client-side.
     table.querySelectorAll<HTMLElement>('tr').forEach((tr) => {
       const isToday = Number(tr.dataset.day) === now.day;
-      tr.classList.toggle('bg-cream-100', isToday);
-      tr.classList.toggle('font-semibold', isToday);
+      tr.classList.toggle('is-today', isToday);
       tr.querySelector('.today-tag')!.textContent = isToday ? ' (hoje)' : '';
     });
     document.getElementById('open-text')!.textContent = open ? `Aberto agora · fecha às ${closesAt}` : 'Fechado agora';
-    document.getElementById('open-dot')!.className = 'h-3 w-3 rounded-full ' + (open ? 'bg-[#0f7b42]' : 'bg-plum-800');
+    document.getElementById('open-dot')!.classList.toggle('is-open', open);
   }
   update();
   setInterval(update, 60_000);

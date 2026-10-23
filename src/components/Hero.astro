@@ -1,37 +1,47 @@
 ---
-import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
-import Logo from './Logo.astro';
-import { business, features, whatsappLink, mapsDirectionsUrl } from '../data/site';
+import { business, heroReview, whatsappLink } from '../data/site';
+import { withBase } from '../lib/url';
 const ratingText = business.rating.value.toFixed(1).replace('.', ',');
-// Client photo (git-ignored until permission): lazy glob so nothing is bundled when the flag is off.
-const heroFiles = import.meta.glob<{ default: ImageMetadata }>('../assets/images/hero-interior.jpg');
-const hero = features.showClientPhotos ? (await heroFiles['../assets/images/hero-interior.jpg']()).default : null;
+const m = (f: string) => withBase(`media/${f}`);
 ---
-<section class="on-dark bg-ink-900 text-cream-100">
-  <div class="grid lg:grid-cols-[1.2fr_0.8fr]">
-    <div class="container-x flex flex-col justify-center py-14 sm:py-20 lg:ml-auto lg:mr-0 lg:w-full lg:max-w-[46rem] lg:py-28 lg:pl-8 lg:pr-14">
-      <h1 class="t-hero leading-[1.04] text-cream-100">Cuidado de verdade para o seu cabelo.</h1>
-      <p class="mt-6 max-w-xl text-[1.15rem] text-sand-300">
-        Salão unissex no Centro de Indaiatuba: corte, escova, progressiva, hidratação, unhas e estética, com um atendimento que começa escutando você.
-      </p>
-      <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
-        <a href={whatsappLink()} target="_blank" rel="noopener" class="btn btn-rose"><Icon name="whatsapp" /> Agendar pelo WhatsApp</a>
-        <a href={mapsDirectionsUrl} target="_blank" rel="noopener" class="link inline-flex min-h-11 items-center gap-2 text-cream-100"><Icon name="pin" class="h-5 w-5" /> Como chegar</a>
-      </div>
-      <p class="mt-10 font-semibold text-cream-100">
-        <a href={business.mapsUrl} target="_blank" rel="noopener" class="hover:underline">{ratingText} <span class="text-rose-400" aria-hidden="true">★</span> · {business.rating.count} avaliações no Google</a>
-      </p>
-    </div>
-    <div class="relative min-h-[22rem] lg:min-h-[40rem]">
-      {hero ? (
-        <Image src={hero} alt="Cabelo longo e liso com reflexos dourados, visto de costas, dentro do Studio Diva's Hair" widths={[480, 720, 1000, 1400]}
-               sizes="(min-width: 1024px) 48vw, 100vw" loading="eager" fetchpriority="high" class="absolute inset-0 h-full w-full object-cover object-[50%_30%]" />
-      ) : (
-        <div class="absolute inset-0 grid place-items-center bg-plum-800" aria-hidden="true">
-          <Logo file="logo-stacked-reversed.svg" alt="" height={190} class="h-auto w-[min(70%,22rem)]" />
+<section class="hero" id="inicio">
+  <div class="hero__media" id="heroMedia" data-video-d={m('hero-desktop.mp4')} data-video-m={m('hero-mobile.mp4')}>
+    <picture>
+      <source media="(min-width:900px)" type="image/avif" srcset={m('hero-poster-d.avif')} />
+      <source media="(min-width:900px)" type="image/webp" srcset={m('hero-poster-d.webp')} />
+      <source type="image/avif" srcset={m('hero-poster-m.avif')} />
+      <source type="image/webp" srcset={m('hero-poster-m.webp')} />
+      <img src={m('hero-poster-m.webp')} alt="Mulher de costas com cabelo longo, liso e muito brilhante (imagem ilustrativa)" width="720" height="1280" fetchpriority="high" decoding="async" />
+    </picture>
+    <video id="heroVideo" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1" disablepictureinpicture></video>
+  </div>
+  <div class="wrap hero__inner">
+    <div class="hero__grid">
+      <div>
+        <p class="hero__eyebrow cas" style="--d:.1s">Indaiatuba · São Paulo</p>
+        <h1>
+          <span class="ln cas" style="--d:.25s">Cabelo lindo</span>
+          <span class="ln cas" style="--d:.4s">começa no</span>
+          <span class="ln cas" style="--d:.55s"><em>cuidado</em></span>
+        </h1>
+        <p class="hero__sub cas" style="--d:.75s">Salão unissex no Centro de Indaiatuba: corte, escova, progressiva, hidratação, unhas e estética, com um atendimento que começa escutando você.</p>
+        <div class="hero__actions cas" style="--d:.95s">
+          <a class="btn btn--gold" href={whatsappLink()} target="_blank" rel="noopener"><Icon name="whatsapp" />Agendar pelo WhatsApp</a>
+          <a class="btn btn--ghost" href="#servicos">Ver serviços</a>
         </div>
-      )}
+      </div>
+      <aside class="proof cas" id="proof" style="--d:1.15s" aria-label="Avaliação no Google">
+        <div class="proof__top">
+          <span class="proof__score">{ratingText}</span>
+          <div>
+            <span class="stars" role="img" aria-label="5 estrelas">{[0, 1, 2, 3, 4].map(() => <Icon name="star" />)}</span>
+            <p class="proof__meta">{business.rating.count} avaliações no Google</p>
+          </div>
+        </div>
+        <q>{heroReview.quote}</q>
+        <p class="proof__by">— {heroReview.author} · avaliação no Google</p>
+      </aside>
     </div>
   </div>
 </section>
