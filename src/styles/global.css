@@ -14,7 +14,7 @@
 }
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:72px;-webkit-text-size-adjust:100%}
-body{margin:0;font-family:var(--sans);font-size:16px;line-height:1.7;color:var(--text);background:var(--ivory);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{margin:0;font-variant-numeric:lining-nums;font-family:var(--sans);font-size:16px;line-height:1.7;color:var(--text);background:var(--ivory);overflow-x:hidden;-webkit-font-smoothing:antialiased}
 img,picture,svg,video{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 h1,h2,h3,h4,p{margin:0}
@@ -322,6 +322,37 @@ section{position:relative}
 .credits a{color:var(--wine);font-weight:600;text-decoration:underline;text-underline-offset:3px}
 .table-scroll{overflow-x:auto}
 .page__btns{margin-top:28px;display:flex;flex-wrap:wrap;gap:12px}
+
+
+/* ============ TIPOGRAFIA DE LUXO: textos corridos em Cormorant, rótulos em Manrope maiúsculo e espaçado ============ */
+.hero__sub,.chapter__text,.section-lead,.about__text p,.svc__line,.cta p.lead,.page .lead{font-family:var(--serif);font-weight:500;letter-spacing:.01em}
+.hero__sub{font-size:clamp(1.25rem,2vw,1.55rem);line-height:1.5;max-width:560px}
+.chapter__text{font-size:clamp(1.25rem,1.9vw,1.5rem);line-height:1.5;max-width:520px}
+.section-lead{font-size:clamp(1.25rem,1.8vw,1.45rem);line-height:1.5;color:var(--text)}
+.about__text p{font-size:clamp(1.25rem,1.7vw,1.4rem);line-height:1.6;color:var(--text);max-width:600px}
+.svc__line{font-size:1.28rem;line-height:1.4;max-width:30ch}
+.cta p.lead{font-size:clamp(1.25rem,1.8vw,1.5rem);line-height:1.5}
+.diff strong{font-family:var(--serif);font-size:1.4rem;font-weight:500;letter-spacing:.02em;line-height:1.25}
+.diff span{font-size:.9rem}
+.nav{gap:38px;font-size:.72rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase}
+.btn{font-size:.76rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.btn--sm{font-size:.72rem}
+.chips li{font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:7px 14px}
+.chips__toggle{letter-spacing:.14em}
+.proof__meta,.proof__by{letter-spacing:.08em}
+.info-row p,.info-row address p{font-family:var(--serif);font-weight:500;font-size:1.3rem;line-height:1.4;letter-spacing:.01em}
+.info-row a.tel{font-weight:600}
+.hours th,.hours td{font-family:var(--serif);font-size:1.2rem;font-weight:500;letter-spacing:.02em}
+.hours th{padding-right:24px}
+.open-pill{font-size:.74rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.cta__addr{font-family:var(--serif);font-weight:500;font-size:1.2rem;letter-spacing:.02em}
+.footer{font-size:.95rem}
+.footer p,.footer li,.footer address{font-family:var(--serif);font-weight:500;font-size:1.15rem;line-height:1.5;letter-spacing:.01em}
+.footer__copy,.footer__copy p{font-family:var(--sans);font-size:.74rem;letter-spacing:.06em}
+.quote__by b{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase}
+.quote__by small{letter-spacing:.06em}
+.stat__l{letter-spacing:.22em}
+.drawer a.dl{letter-spacing:.06em}
 
 /* ============ REDUÇÃO DE MOVIMENTO ============ */
 @media (prefers-reduced-motion:reduce){
