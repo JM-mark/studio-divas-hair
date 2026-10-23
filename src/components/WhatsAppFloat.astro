@@ -1,7 +1,7 @@
 ---
 import Icon from './Icon.astro';
-import { business, whatsappLink } from '../data/site';
+import { whatsappLink } from '../data/site';
 ---
-<a href={whatsappLink()} target="_blank" rel="noopener" class="wa-float" id="waFloat" aria-label={`Falar no WhatsApp: ${business.phoneDisplay}`}>
-  <Icon name="whatsapp" /><span class="long">{business.phoneDisplay}</span><span class="short">WhatsApp</span>
+<a href={whatsappLink()} target="_blank" rel="noopener" class="wa-float" id="waFloat" aria-label="Agendar pelo WhatsApp">
+  <Icon name="whatsapp" /><span>WhatsApp</span>
 </a>

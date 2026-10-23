@@ -2,7 +2,6 @@
 import { business, serviceCount } from '../data/site';
 const stats = [
   { to: business.rating.value, dec: 1, label: 'Nota no Google' },
-  { to: business.rating.count, dec: 0, label: 'Avaliações no Google' },
   { to: serviceCount, dec: 0, label: 'Serviços' },
 ];
 const fmt = (v: number, d: number) => v.toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d });

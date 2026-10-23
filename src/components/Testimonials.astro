@@ -18,7 +18,6 @@ const ratingText = business.rating.value.toFixed(1).replace('.', ',');
           <span class="stars" role="img" aria-label="5 de 5 estrelas">{[0, 1, 2, 3, 4].map(() => <Icon name="star" />)}</span>
           <blockquote>{t.quote}</blockquote>
           <figcaption class="quote__by"><span class="quote__av" aria-hidden="true">{t.author[0]}</span><div><b>{t.author}</b><small>Avaliação no Google · {t.when}</small></div></figcaption>
-          {t.reply && <p class="quote__reply"><strong>Resposta do estúdio:</strong> {t.reply}</p>}
         </figure>
       ))}
     </div>
